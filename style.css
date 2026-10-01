@@ -11,3 +11,12 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 @media(max-width:600px){header{display:block}.header-note.area-switch{margin-top:16px;display:inline-block}#logout{margin-left:8px}}
 
 .card[data-open]{cursor:pointer}.card[data-open]:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
+/* align header area switch and logout action */
+@media(min-width:901px){
+  header{align-items:center}
+  .header-note.area-switch,#logout{align-self:center;margin-top:0;margin-bottom:0}
+  #logout{height:40px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
+}
+@media(min-width:601px) and (max-width:900px){
+  .header-note.area-switch,#logout{align-self:center;height:40px;display:inline-flex;align-items:center}
+}
