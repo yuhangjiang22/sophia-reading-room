@@ -20,3 +20,14 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 @media(min-width:601px) and (max-width:900px){
   .header-note.area-switch,#logout{align-self:center;height:40px;display:inline-flex;align-items:center}
 }
+/* readability pass: comfortable measure, larger body text, clearer rhythm */
+.article{max-width:760px}
+.article h2{line-height:1.45}
+.article p,.article li{font-size:16px;line-height:2.05}
+.article .lead{font-size:18px;line-height:1.9}
+.card p{font-size:15px;line-height:1.95}
+.notice{line-height:1.7}
+.review{line-height:1.8}
+.english-reading{line-height:1.8}
+.term-body{line-height:1.85}
+@media(max-width:600px){.article{max-width:none}.article p,.article li{font-size:16px;line-height:2}.article .lead{font-size:17px}.card p{font-size:15px}}
