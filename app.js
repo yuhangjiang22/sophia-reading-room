@@ -7,7 +7,7 @@ const topics=['全部','睡眠与情绪','心理治疗'];
 let saved=new Set(),read=new Set(),filter='全部',query='';
 try{saved=new Set(JSON.parse(localStorage.getItem('conger-saved')||'[]'));read=new Set(JSON.parse(localStorage.getItem('conger-read')||'[]'))}catch{}
 const app=document.getElementById('app');
-const notice='<div class="notice"><span>✧</span><span>第一期已完成来源与主要结果核对。下一期论文正在候选检索和审核中。</span></div>';
+const notice='<div class="notice"><span>✧</span><span>本期已收录 2 篇论文导读，来源与主要结果已完成首轮核对。</span></div>';
 function persist(){try{localStorage.setItem('conger-saved',JSON.stringify([...saved]));localStorage.setItem('conger-read',JSON.stringify([...read]));return true}catch{toast('浏览器无法保存数据，本次会话仍可使用。');return false}}
 let timer;function toast(text){const el=document.getElementById('toast');el.textContent=text;el.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>el.classList.remove('show'),2400)}
 function saveButton(a){return `<button class="save" data-save="${a.id}" aria-pressed="${saved.has(a.id)}" aria-label="${saved.has(a.id)?'取消收藏':'收藏'}：${a.title}">${saved.has(a.id)?'已收藏':'＋ 收藏'}</button>`}

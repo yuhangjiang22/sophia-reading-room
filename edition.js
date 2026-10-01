@@ -4,7 +4,7 @@
 // 文案不暗示未经证据支持的疗效，保持网站视觉一致。
 window.CONGER_EDITION = Object.freeze({
   id: 'preview-00',
-  label: '阅读样刊 / VOL. 00',
+  label: '第一期 / VOL. 01',
   theme: '睡眠与情绪',
   featuredArticleId: 'sleep',
   tone: '安静、温柔',
