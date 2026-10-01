@@ -9,3 +9,5 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 @media(min-width:901px){header{display:grid;grid-template-columns:auto 1fr auto auto;gap:18px}nav{gap:18px}.header-note.area-switch{margin-left:0}#logout{margin-left:0}}
 @media(min-width:601px) and (max-width:900px){header{display:flex;flex-wrap:wrap;gap:14px;padding:20px 25px}.header-note.area-switch{margin-left:auto}#logout{margin-left:0}}
 @media(max-width:600px){header{display:block}.header-note.area-switch{margin-top:16px;display:inline-block}#logout{margin-left:8px}}
+
+.card[data-open]{cursor:pointer}.card[data-open]:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
