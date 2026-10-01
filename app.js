@@ -1,8 +1,9 @@
 const edition = window.CONGER_EDITION;
 const articles = [
 {id:'sleep',topic:'睡眠与情绪',type:'原始研究 · 随机交叉试验',title:'当抑郁症的夜晚变得更深：一项慢波睡眠研究告诉了我们什么',desc:'一项随机、双盲、交叉试验，把抑郁症中的睡眠问题拆成慢波睡眠、次日警觉性和工作记忆几个可测量的问题。',question:'改善睡眠结构，能否成为理解抑郁症的新入口？',time:7},
+{id:'credibility',topic:'心理治疗',type:'系统综述 · 研究可信度',title:'当“有效”还不够：一项系统综述重新检查了中国人群心理治疗试验的可信度',desc:'这篇 Lancet Psychiatry 系统综述纳入 857 项随机试验，关注随机化、分配隐藏、盲法、意向性分析和数据可信度。',question:'我们看到一个很大的治疗效应时，先应该问哪些方法学问题？',time:8}
 ];
-const topics=['全部','睡眠与情绪'];
+const topics=['全部','睡眠与情绪','心理治疗'];
 let saved=new Set(),read=new Set(),filter='全部',query='';
 try{saved=new Set(JSON.parse(localStorage.getItem('conger-saved')||'[]'));read=new Set(JSON.parse(localStorage.getItem('conger-read')||'[]'))}catch{}
 const app=document.getElementById('app');
