@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a dated PubMed candidate list. Review the CSV before writing articles."""
+"""Build a dated local PubMed discovery list for editorial screening."""
 import csv, datetime, json, urllib.parse, urllib.request
 ROOT = __import__('pathlib').Path(__file__).resolve().parents[1]
 today = datetime.date.today().isoformat()
@@ -22,10 +22,11 @@ for q in queries:
             if aid.get('idtype')=='doi': doi=aid.get('value','')
         key=doi or pmid
         if key in seen: continue
-        seen.add(key); rows.append({'found_date':today,'title':x.get('title','').rstrip('.'),'year':x.get('pubdate','')[:4],'journal':x.get('fulljournalname',''),'doi':doi,'topic':'to classify','study_type':'to classify','source_url':f'https://pubmed.ncbi.nlm.nih.gov/{pmid}/','full_text':'verify','screening_status':'candidate','reason':'Needs title/abstract/full-text screening'})
-out=ROOT/'content'/'candidates.csv'; exists=out.exists()
+        seen.add(key); rows.append({'found_date':today,'title':x.get('title','').rstrip('.'),'year':x.get('pubdate','')[:4],'journal':x.get('fulljournalname',''),'doi':doi,'topic':'to classify','study_type':'to classify','source_url':f'https://pubmed.ncbi.nlm.nih.gov/{pmid}/','full_text':'verify','screening_status':'to_review','reason':'Needs title/abstract/full-text screening'})
+out=ROOT/'content'/'private'/'research-discovery.csv'; exists=out.exists()
+out.parent.mkdir(parents=True, exist_ok=True)
 with out.open('a',newline='',encoding='utf-8') as f:
     w=csv.DictWriter(f,fieldnames=['found_date','title','year','journal','doi','topic','study_type','source_url','full_text','screening_status','reason'])
     if not exists: w.writeheader()
     w.writerows(rows)
-print(f'Added {len(rows)} unique PubMed candidates to {out}')
+print(f'Added {len(rows)} unique PubMed records for review to {out}')

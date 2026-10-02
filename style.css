@@ -124,24 +124,6 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 .blog-article>h2{margin-top:42px}
 .blog-kicker{font-size:15px;line-height:1.8;color:var(--purple);margin:24px 0 5px}
 .gloss-note{width:min(100%,620px)}
-.candidate-disclaimer{padding:19px 22px;margin:10px 0 24px;background:#f0ecf3;border-left:3px solid var(--purple);border-radius:0 9px 9px 0;color:#62566e}
-.candidate-disclaimer strong{font-weight:600;color:var(--purple)}
-.candidate-disclaimer p{margin:5px 0 0;font-size:14px;line-height:1.9}
-.candidate-count{font-size:13px;color:var(--muted);margin:-8px 0 16px}
-.candidate-card{min-width:0}
-.candidate-card h3 a:hover{color:var(--purple);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
-.candidate-card .candidate-meta{font-size:12px;color:var(--muted);line-height:1.7;margin:-12px 0 17px}
-.candidate-boundary{display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:#f7f4f8;border-radius:6px;color:#62566e;font-size:13px;line-height:1.75}
-.candidate-boundary strong{color:var(--purple);font-weight:500}
-.candidate-source{display:flex;flex-direction:column;gap:8px;padding-top:14px;margin-top:15px;border-top:1px solid var(--line);font-size:12px;line-height:1.7;color:var(--muted);overflow-wrap:anywhere}
-.candidate-source a{color:var(--purple);font-weight:500}
-.candidate-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:15px;font-size:12px;color:var(--muted)}
-.candidate-actions>div{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
-.candidate-actions .save{white-space:nowrap;padding:6px 9px;font-size:12px}
-.candidate-actions .save.selected{background:var(--pale);border-color:#bca9ca}
 nav{gap:24px}
 @media(max-width:1050px) and (min-width:601px){header{gap:24px}nav{gap:15px;font-size:14px}.brand{font-size:18px}}
-@media(max-width:600px){nav{gap:20px;overflow-x:auto;white-space:nowrap;padding-bottom:4px}.candidate-actions{align-items:flex-start;flex-direction:column}.candidate-actions>div{justify-content:flex-start}.candidate-disclaimer{padding:16px}}
 @media(max-width:600px){.blog-article>p{font-size:16px;line-height:2}.blog-article>h2{font-size:22px;margin-top:34px}}
-
-.notice{flex-wrap:wrap}.notice-link{margin-left:auto;color:var(--purple);font-size:13px;white-space:nowrap;text-decoration:underline;text-underline-offset:3px}.candidate-count{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.candidate-count [data-candidate-sync-status]{color:var(--muted);font-size:13px}.candidate-count [data-state="synced"]{color:#55765d}.candidate-count [data-state="offline"]{color:#8a5d55}.sync-retry{border:0;background:transparent;color:var(--purple);text-decoration:underline;text-underline-offset:3px;padding:2px 4px;font-size:13px}

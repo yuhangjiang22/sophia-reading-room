@@ -1,5 +1,5 @@
-// Candidate briefs are based on bibliographic records and abstracts. They are not full-text reviews.
-window.SOPHIA_CANDIDATES = [
+// Reviewed article records for the current batch; source and evidence scope are shown on each article.
+window.SOPHIA_BATCH_PAPERS = [
   {id:'artemis-youth',pmid:'42054038',year:'2026',journal:'JAMA Psychiatry',topic:'青少年心理健康',type:'集群随机对照试验',title:'社区能否接住高风险青少年的心理求助？',paperTitle:'Adolescent Mental Health Care and Stigma: The ARTEMIS Randomized Clinical Trial',desc:'在印度 60 个社区开展的集群随机试验，把反污名宣传和基层卫生人员主导的数字识别、照护结合起来，随访 3,739 名青少年。它同时追问：改变社区态度与提供基层支持，能否让高风险青少年更容易得到帮助？',caveat:'研究场景是印度城市贫困社区，干预由社区和基层医疗体系共同实施；不能直接等同于学校心理服务或其他国家的常规诊疗。',url:'https://pubmed.ncbi.nlm.nih.gov/42054038/'},
   {id:'star-ptsd-psychosis',pmid:'42309103',year:'2026',journal:'The Lancet Psychiatry',topic:'创伤与精神病',type:'多中心务实随机试验',title:'同时面对创伤后应激和精神病症状，治疗能否两边兼顾？',paperTitle:'Trauma-focused therapy integrated with cognitive behavioural therapy for psychosis for people with post-traumatic stress disorder and psychosis (the STAR trial): a multicentre, pragmatic, randomised trial in the UK',desc:'英国 STAR 试验把创伤聚焦治疗整合进精神病认知行为治疗，比较“整合治疗加常规照护”和单独常规照护。305 名同时有 PTSD 与精神病的成人参与，研究观察 9 个月后的 PTSD 症状及其他临床结局。',caveat:'疗程长达 9 个月，治疗经过个别化；研究结论对应有专门训练团队的英国二级照护场景。',url:'https://pubmed.ncbi.nlm.nih.gov/42309103/'},
   {id:'task-shared-components',pmid:'42546730',year:'2026',journal:'The Lancet Psychiatry',topic:'心理治疗',type:'个体数据成分网络荟萃分析',title:'心理干预里，哪些“组成部分”可能真正帮得上忙？',paperTitle:'Optimising and personalising task-shared psychosocial interventions for common mental disorders',desc:'研究团队把由非专科人员提供的心理社会干预拆成具体组成部分，再比较哪些元素与症状改善相关。34 项随机试验中有 30 项提供了个体参与者数据，共 10,612 人；社会支持、行为激活和问题管理显示出较有利的信号。',caveat:'组合成分的统计估计不等于已经证明某个单独模块对每个人都有效；论文也指出族裔资料缺失，个人化预测需要谨慎解释。',url:'https://pubmed.ncbi.nlm.nih.gov/42546730/'},
@@ -23,7 +23,7 @@ window.SOPHIA_CANDIDATES = [
 ];
 
 // Plain-language notes for specialist terms shown in candidate briefs.
-window.SOPHIA_CANDIDATE_GLOSSARY = {
+window.SOPHIA_BATCH_GLOSSARY = {
   '集群随机试验':'不是把每个人单独抽签，而是把整所学校、社区或诊所随机分到不同方案，适合评估面向群体的干预；分析时要考虑同一群体内的人彼此相似。',
   '反污名':'减少对心理疾病的刻板印象、排斥和歧视。宣传态度改变了，不一定代表人们真的更容易获得治疗，还要看实际求助和服务使用。',
   '基层卫生人员':'在社区或基础医疗机构提供初步健康服务的工作人员，不一定受过精神科专科训练。',

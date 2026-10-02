@@ -1,14 +1,14 @@
-# 候选论文批次 01 · 2026-10-01
+# 2026-10 批次 01 · 20 篇论文长文来源记录
 
 ## 范围与方法
 
-本批次新增 20 篇候选论文，逐条以 PubMed 题录和摘要核对，覆盖青少年心理健康、精神病与创伤、心理治疗、睡眠、孕产期心理健康、数字干预、双相障碍、物质使用和预防研究。候选卡保留原文题名、PubMed 链接、研究类型、摘要层面的要点及主要边界。
+本批次新增 20 篇论文故事，逐条以 PubMed 题录和摘要核对，覆盖青少年心理健康、精神病与创伤、心理治疗、睡眠、孕产期心理健康、数字干预、双相障碍、物质使用和预防研究。本次新增 20 篇的页面 ID、原文题名、PubMed 链接、研究类型和摘要层面边界见下表。全部 28 篇的来源索引见 [`2026-10-issue-01-source-index.csv`](2026-10-issue-01-source-index.csv)。
 
-这些条目是选题候选与摘要初筛简报，不是完整论文导读。写成长文前仍需核对全文的方法、结果表格、补充材料及研究局限；摘要未提供的数字和细节不应推测补全。
+网站现已为本表 20 篇研究分别提供故事化长文。这些文章依据 PubMed 题录与摘要撰写，未核对期刊全文及补充材料；正文保留这一范围说明，摘要未提供的细节不作推测。
 
-## 候选清单
+## 已发布长文索引
 
-| PMID | 研究 | 期刊 | 页面候选 ID |
+| PMID | 研究 | 期刊 | 文章页面 ID |
 |---|---|---|---|
 | 42054038 | Adolescent Mental Health Care and Stigma: The ARTEMIS Randomized Clinical Trial | JAMA Psychiatry | artemis-youth |
 | 42309103 | Trauma-focused therapy integrated with cognitive behavioural therapy for psychosis for people with post-traumatic stress disorder and psychosis (the STAR trial): a multicentre, pragmatic, randomised trial in the UK | The Lancet Psychiatry | star-ptsd-psychosis |
