@@ -39,3 +39,7 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 @media(min-width:901px){header{grid-template-columns:auto 1fr auto;align-items:center}.header-actions{grid-column:3}}
 @media(min-width:601px) and (max-width:900px){header{display:flex;align-items:center;flex-wrap:wrap}.header-actions{margin-left:auto}}
 @media(max-width:600px){.header-actions{justify-content:flex-start;margin-top:16px}.header-actions #logout{margin-left:0}}
+/* both header actions use the same box metrics */
+.header-actions{align-items:center!important}
+.header-actions .area-switch a{display:inline-flex;align-items:center;height:40px;line-height:1;padding:0 10px}
+.header-actions #logout{height:40px!important;line-height:1;padding:0 12px;vertical-align:middle}
