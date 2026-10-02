@@ -29,6 +29,73 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 .notice{line-height:1.7}
 .review{line-height:1.8}
 .english-reading{line-height:1.8}
+
+/* English research room: long-form reading comes first; vocabulary is supporting material. */
+.english-page .page-title.english-hero{padding:48px 0 34px;max-width:850px}
+.english-hero h1{font-size:43px;line-height:1.25;letter-spacing:-.4px;margin:12px 0 15px}
+.english-hero>p{font-size:18px;line-height:1.8;max-width:760px;color:#625b69}
+.english-level{margin-top:22px;font-size:11px;letter-spacing:1.3px;color:var(--purple)}
+.english-level span{padding:0 8px;color:#b8a9c3}
+.research-story-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.research-story-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:27px;display:flex;flex-direction:column;min-height:390px}
+.story-card-top{display:flex;align-items:center;justify-content:space-between}
+.story-card-kicker{margin:23px 0 0;font-size:10px;letter-spacing:1.7px;color:var(--purple);font-weight:600}
+.research-story-card h2{font-size:25px;font-weight:550;line-height:1.4;margin:8px 0 12px}
+.research-story-card h2 a{color:var(--ink)}
+.story-card-dek{font-size:15px;line-height:1.8;color:var(--muted);margin:0}
+.research-story-card blockquote{border-left:2px solid #cdbddd;margin:19px 0;padding:3px 0 3px 15px;color:#5c5365;font-size:15px;line-height:1.75}
+.story-card-bottom{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.story-card-bottom>span{font-size:12px;color:var(--muted)}
+.story-card-bottom .primary{white-space:nowrap}
+.english-how{margin:36px 0 15px;padding:24px 27px;border-radius:10px;background:var(--pale);display:grid;grid-template-columns:.7fr 1.3fr;gap:26px;align-items:center}
+.english-how h2{font-size:22px;font-weight:500;margin:8px 0}
+.english-how p{font-size:15px;line-height:1.9;color:#655c6d;margin:0}
+.english-page>.back{display:inline-block;margin:24px 0 10px}
+.english-article{max-width:1120px;margin:0 auto}
+.english-article-head{max-width:850px;padding:16px 0 26px}
+.english-article-head h1{font-size:43px;line-height:1.25;letter-spacing:-.4px;font-weight:550;margin:12px 0 15px}
+.english-dek{font-size:20px;line-height:1.8;color:#645c6b;margin:0}
+.english-article-meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;color:var(--muted);font-size:12px}
+.english-question{max-width:850px;margin:2px 0 30px;padding:17px 22px;background:var(--pale);border-radius:8px}
+.english-question>span,.english-takeaway>span{font-size:10px;letter-spacing:1.6px;color:var(--purple);font-weight:600}
+.english-question p{font-size:18px;line-height:1.7;margin:6px 0 0}
+.english-reading-layout{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(270px,.85fr);gap:38px;align-items:start}
+.english-story-body{min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:34px 42px}
+.translation-tools{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-bottom:20px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.translation-tools .save{flex:none}
+.english-chapter{padding:27px 0 29px;border-bottom:1px solid var(--line)}
+.chapter-number{font-size:10px;letter-spacing:1.8px;color:var(--purple);font-weight:600}
+.english-chapter h2{font-size:25px;line-height:1.45;font-weight:550;margin:7px 0 13px}
+.english-paragraph{margin:0 0 20px}
+.english-paragraph:last-child{margin-bottom:0}
+.english-paragraph>p:first-child{font-size:18px;line-height:2.02;color:#37313f;margin:0 0 7px}
+.translation-toggle{border:0;background:transparent;color:var(--purple);padding:4px 0;font-size:13px;cursor:pointer}
+.english-paragraph>.translation{background:#f1edf4;padding:13px 16px;border-radius:7px;font-size:15px;line-height:1.95;color:#5d5663;margin:9px 0 0}
+.english-takeaway{padding:22px 24px;margin:26px 0;background:#f2edf4;border-left:3px solid var(--purple);border-radius:7px}
+.english-takeaway p{font-size:17px;line-height:1.85;margin:6px 0 0;color:#51495a}
+.english-source{border-top:1px solid var(--line);padding:24px 0 5px}
+.english-source h2{font-size:21px;font-weight:550;margin:0 0 10px}
+.english-source>p:first-of-type{font-size:13px;line-height:1.75;color:var(--muted)}
+.english-source>a{color:var(--purple);font-size:14px;font-weight:500}
+.english-source .source-note{font-size:13px;line-height:1.8;color:var(--muted);margin-top:15px}
+.english-vocabulary{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto;padding-right:3px}
+.english-vocabulary h2{font-size:22px;font-weight:500;margin:8px 0}
+.english-vocabulary>p{font-size:14px;line-height:1.8;color:var(--muted);margin:0 0 16px}
+.english-vocabulary .term-card>summary{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.english-vocabulary .term-card>summary span,.word-grid .term-card>summary span{font-size:12px;font-weight:400;color:var(--muted);white-space:nowrap}
+.inline-term{cursor:pointer}
+.reflection-box{margin-top:30px;padding:22px 24px;border:1px solid var(--line);border-radius:9px}
+.reflection-box h2{font-size:19px;font-weight:500;line-height:1.6;margin:8px 0 16px}
+.word-bank-story{margin:28px 0 42px}
+.word-bank-story .section-head h2{font-size:20px;line-height:1.5}
+.word-bank-story .section-head h2 a{color:var(--ink)}
+.word-grid .term-card>summary{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.practice-grid .practice-card h2{line-height:1.55}
+.discussion-prompt{margin-top:18px;padding-top:12px;border-top:1px solid var(--line)}
+.discussion-prompt>summary{color:var(--purple)}
+.practice-return{margin-top:28px}
+@media(max-width:900px){.english-reading-layout{grid-template-columns:1fr}.english-vocabulary{position:static;max-height:none;overflow:visible}.english-story-body{padding:28px}.research-story-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.english-hero h1,.english-article-head h1{font-size:34px}.english-hero>p{font-size:16px}.research-story-grid{grid-template-columns:1fr}.research-story-card{min-height:0;padding:22px}.story-card-bottom{align-items:flex-start;flex-direction:column}.story-card-bottom .primary{align-self:flex-start}.english-how{grid-template-columns:1fr;gap:8px;padding:20px}.english-article-head{padding-top:5px}.english-dek{font-size:17px}.english-question p{font-size:16px}.english-story-body{padding:22px 19px}.translation-tools{align-items:flex-start;flex-direction:column}.english-chapter h2{font-size:22px}.english-paragraph>p:first-child{font-size:17px;line-height:1.95}.english-paragraph>.translation{font-size:15px}.english-article-meta{gap:8px 14px}.english-page .section-head{align-items:flex-start;gap:8px;flex-direction:column}}
 .term-body{line-height:1.85}
 @media(max-width:600px){.article{max-width:none}.article p,.article li{font-size:16px;line-height:2}.article .lead{font-size:17px}.card p{font-size:15px}}
 

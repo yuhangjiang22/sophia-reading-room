@@ -94,13 +94,14 @@ window.addEventListener('hashchange',()=>{filter='全部';query='';render();wind
 function setInterfaceLanguage(english){
  document.documentElement.lang=english?'en':'zh-CN';
  document.querySelector('.brand').href=english?'#english':'#home';
- document.querySelector('.brand>span:last-child').innerHTML=(english?'Sophia’s English Studio':'聪儿的研究小屋')+'<small>'+(english?'READ · DISCOVER · PRACTISE':'SOPHIA’S READING ROOM')+'</small>';
- document.querySelector('nav').innerHTML=english?'<a href="#english" data-nav="english">Read</a><a href="#english/words" data-nav="english/words">Word bank</a><a href="#english/practice" data-nav="english/practice">Practice</a>':'<a href="#home" data-nav="home">研究小报</a><a href="#topics" data-nav="topics">探索专题</a><a href="#shelf" data-nav="shelf">我的书架 <span id="saved-count">'+saved.size+'</span></a>';
+ document.querySelector('.brand>span:last-child').innerHTML=(english?'Sophia’s English Studio':'聪儿的研究小屋')+'<small>'+(english?'READ · QUESTION · UNDERSTAND':'SOPHIA’S READING ROOM')+'</small>';
+ document.querySelector('nav').innerHTML=english?'<a href="#english" data-nav="english">Research stories</a><a href="#english/words" data-nav="english/words">Vocabulary</a><a href="#english/practice" data-nav="english/practice">Reading check</a>':'<a href="#home" data-nav="home">研究小报</a><a href="#topics" data-nav="topics">探索专题</a><a href="#shelf" data-nav="shelf">我的书架 <span id="saved-count">'+saved.size+'</span></a>';
  document.querySelector('nav').setAttribute('aria-label',english?'English studio navigation':'主导航');
  const note=document.querySelector('.header-note');note.classList.add('area-switch');note.innerHTML=english?'<a href="#home" lang="zh-CN">返回中文研究区</a>':'<a href="#english">英语学习室 · English Studio</a>';
- document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.dataset.nav===(location.hash.slice(1)||'home')));
+ const currentRoute=location.hash.slice(1)||'home';const activeRoute=currentRoute.startsWith('english/article/')?'english':currentRoute;
+ document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.dataset.nav===activeRoute));
  document.querySelector('footer>div').innerHTML='<span class="brand-icon">✿</span> '+(english?'A little English. A new way to understand.':'为聪儿，也为每一个保持好奇的人。');
- document.querySelector('footer>span').textContent=english?'Independent lessons · Psychology in everyday English':'精神医学与心理学 · 中文研究札记';
+ document.querySelector('footer>span').textContent=english?'Research stories · Read at your own pace':'精神医学与心理学 · 中文研究札记';
 }
 
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&!e.target.closest('a,button')&&e.target.closest('[data-open]')){e.preventDefault();location.hash='#article/'+e.target.closest('[data-open]').dataset.open}});
