@@ -31,3 +31,11 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 .english-reading{line-height:1.8}
 .term-body{line-height:1.85}
 @media(max-width:600px){.article{max-width:none}.article p,.article li{font-size:16px;line-height:2}.article .lead{font-size:17px}.card p{font-size:15px}}
+
+/* keep the area switch and logout as one aligned header action group */
+.header-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;white-space:nowrap}
+.header-actions .header-note.area-switch{margin:0;display:block}
+.header-actions #logout{margin:0;height:40px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
+@media(min-width:901px){header{grid-template-columns:auto 1fr auto;align-items:center}.header-actions{grid-column:3}}
+@media(min-width:601px) and (max-width:900px){header{display:flex;align-items:center;flex-wrap:wrap}.header-actions{margin-left:auto}}
+@media(max-width:600px){.header-actions{justify-content:flex-start;margin-top:16px}.header-actions #logout{margin-left:0}}
