@@ -10,6 +10,7 @@ let candidateFeedback={};
 try{candidateFeedback=JSON.parse(localStorage.getItem('conger-candidate-feedback')||'{}')}catch{}
 let candidateSyncState='local';
 const syncBase=(window.SOPHIA_SYNC_CONFIG?.apiBase||'').replace(/\/$/,'');
+function feedbackValue(id){const item=candidateFeedback[id];return typeof item==='string'?item:item?.feedback||''}
 function feedbackTimestamp(item){return typeof item==='string'?0:Number(item?.updatedAt)||0}
 function persistFeedback(){try{localStorage.setItem('conger-candidate-feedback',JSON.stringify(candidateFeedback));return true}catch{return false}}
 function updateCandidateSyncLabel(){const label=document.querySelector('[data-candidate-sync-status]');if(!label)return;const validIds=new Set(candidates.map(item=>item.id));const count=Object.entries(candidateFeedback).filter(([id,value])=>validIds.has(id)&&(typeof value==='string'?value:value?.feedback)==='interested').length;const text={local:'仅保存在当前浏览器',syncing:'正在同步到私人选题队列…',synced:`已同步到私人选题队列 · ${count} 篇感兴趣`,offline:'已保存在当前浏览器；云端同步暂不可用'};label.textContent=text[candidateSyncState]||text.local;label.dataset.state=candidateSyncState}
@@ -21,7 +22,7 @@ const topics=['全部',...new Set(articles.map(a=>a.topic))];
 let saved=new Set(),read=new Set(),filter='全部',query='';
 try{saved=new Set(JSON.parse(localStorage.getItem('conger-saved')||'[]'));read=new Set(JSON.parse(localStorage.getItem('conger-read')||'[]'))}catch{}
 const app=document.getElementById('app');
-const notice=`<div class="notice"><span>✧</span><span>已整理 ${articles.length} 篇完整论文故事，另有 ${candidates.length} 篇候选研究供你挑选。</span></div>`;
+const notice=`<div class="notice"><span>✧</span><span>已整理 ${articles.length} 篇完整论文故事，另有 ${candidates.length} 篇候选研究供你挑选。</span><a class="notice-link" href="#candidates">查看 20 篇候选论文 →</a></div>`;
 function persist(){try{localStorage.setItem('conger-saved',JSON.stringify([...saved]));localStorage.setItem('conger-read',JSON.stringify([...read]));return true}catch{toast('浏览器无法保存数据，本次会话仍可使用。');return false}}
 let timer;function toast(text){const el=document.getElementById('toast');el.textContent=text;el.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>el.classList.remove('show'),2400)}
 function saveButton(a){return `<button class="save" data-save="${a.id}" aria-pressed="${saved.has(a.id)}" aria-label="${saved.has(a.id)?'取消收藏':'收藏'}：${a.title}">${saved.has(a.id)?'已收藏':'＋ 收藏'}</button>`}
