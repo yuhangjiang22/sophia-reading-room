@@ -27,6 +27,7 @@ const input=document.getElementById('search');if(input){input.value=query;input.
 function renderArticle(a){
  document.title=a.title+' · 聪儿的研究小屋';
  const credibility=a.id==='credibility';
+ const prose=text=>text.split('\n').filter(Boolean).map(x=>'<p>'+x+'</p>').join('');
  const details=credibility?{
   intro:'想象你在门诊里看到一项研究：心理治疗的效应量很大，结论也写得很确定。真正需要追问的，是这份确定感从哪里来。这篇系统综述把“中国人群心理治疗试验为什么看起来特别有效”拆成一组可检查的方法学问题。作者不仅看疗效，还核对研究是否注册、随机分组是否充分、分配过程是否被隐藏、结果评估者是否不知道分组，以及数据是否可信。',
   context:'这项工作的价值不在于再宣布一次“心理治疗有效”，而在于检查疗效数字是否值得信任。对于精神科医生来说，研究报告的透明度会影响我们如何判断效应大小、如何向患者解释预期，也会影响后续研究能否复现。',
