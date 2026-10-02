@@ -1,0 +1,11 @@
+name = "sophia-reading-room-sync"
+main = "src/index.js"
+compatibility_date = "2026-09-15"
+
+[[kv_namespaces]]
+binding = "SOPHIA_INTERESTS"
+id = "REPLACE_WITH_CREATED_KV_NAMESPACE_ID"
+
+[vars]
+ALLOWED_ORIGINS = "https://yuhangjiang22.github.io,http://127.0.0.1:4173,http://localhost:4173"
+SESSION_TTL_SECONDS = "43200"
