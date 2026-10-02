@@ -11,6 +11,9 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 @media(max-width:600px){header{display:block}.header-note.area-switch{margin-top:16px;display:inline-block}#logout{margin-left:8px}}
 
 .card[data-open]{cursor:pointer}.card[data-open]:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
+/* Keep the save action on one line in narrow article cards. */
+.card-bottom .meta{flex:1;min-width:0}
+.card-bottom .save{flex:0 0 auto;white-space:nowrap}
 /* align header area switch and logout action */
 @media(min-width:901px){
   header{align-items:center}
