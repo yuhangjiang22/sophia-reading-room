@@ -29,7 +29,8 @@ python3 -m http.server 4173 --bind 127.0.0.1
 
 - index.html：页面入口
 - style.css：主题与响应式布局
-- app.js：演示文章、页面路由、筛选和本地书架
+- app.js：首批两篇文章、页面路由、筛选和本地书架
+- papers.js：其余六篇已核对来源的文章内容
 - assets/reading-dog.png：生成的狗狗插画
 
 ## 本次验证
