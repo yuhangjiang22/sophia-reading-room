@@ -27,10 +27,37 @@ const input=document.getElementById('search');if(input){input.value=query;input.
 function renderArticle(a){
  document.title=a.title+' · 聪儿的研究小屋';
  const credibility=a.id==='credibility';
- const paragraphs=text=>text.trim().split(/\n\s*\n/).map(x=>`<p>${x}</p>`).join('');
+ const glossary=credibility?[
+  ['随机对照试验','randomized controlled trial','研究者把参与者分到不同组，再比较结果。随机分组是为了尽量让各组起点相近；它不能自动保证研究做得好。'],
+  ['随机化','randomization','用随机方式决定谁进哪一组，减少研究者或参与者挑选分组造成的偏差。'],
+  ['分配隐藏','allocation concealment','在患者正式入组前，不让负责招募的人提前知道下一个人会进哪组，避免无意中影响入组。'],
+  ['盲法','blinding','让参与者、治疗人员或评估结果的人不知道分组。心理治疗很难让治疗师和患者都“盲”，但评估者仍可能不知道。'],
+  ['意向性分析','intention-to-treat','尽量按最初分组来分析所有参与者，即使有人中途退出或没有完全照做，也不随意把他们从结果里删掉。'],
+  ['效应量','effect size','把两组差异换成可比较的标准化数字。g=2 不代表“改善了两倍”，也不直接告诉我们患者实际好转了多少。'],
+  ['数据真实性关注','data authenticity concern','审查者发现需要进一步核验的异常信号。它不是造假判决，也不等于已经证明数据有问题。'],
+  ['预先注册','trial registration','在研究开始前公开写下计划研究什么、主要看什么结果，方便后来检查有没有临时改问题或挑结果。'],
+  ['偏倚','bias','研究过程里某种稳定的倾斜，让结果更容易朝某个方向走。它不一定是故意造成的。']
+ ]:[
+  ['交叉试验','crossover trial','同一个人先后经历不同实验条件，再比较自己在各条件下的表现；因此不只是拿甲组和乙组作比较。'],
+  ['双盲','double-blind','尽量让参与者和研究团队不知道当晚拿到的是哪种药，减少期待影响。实际能否完全盲住，还要看药物效果是否容易被察觉。'],
+  ['安慰剂','placebo','看起来像药、但不含研究药物成分的对照，用来分辨药物作用和期待或自然波动。'],
+  ['慢波睡眠','slow-wave sleep','睡眠中较深的一段，也叫 N3。研究用脑电监测它，不等同于醒来后主观觉得“睡得香”。'],
+  ['睡眠效率','sleep efficiency','躺在床上的时间里，真正睡着的比例。它高不一定就表示白天状态一定好。'],
+  ['多导睡眠监测','polysomnography','睡觉时记录脑电、眼动、肌肉活动等信号的检查，帮助研究者分辨睡眠阶段。'],
+  ['警觉性测试','psychomotor vigilance test','一项盯着屏幕及时按键的注意力任务，记录反应速度和漏掉的提示；它是实验测验，不等于日常工作能力。'],
+  ['工作记忆','working memory','短时间把信息放在脑中并拿来处理的能力，比如记住刚看到的内容再完成下一步。'],
+  ['BDNF','brain-derived neurotrophic factor','脑源性神经营养因子，是研究者测量的一种血液指标。它不是抑郁症的诊断指标，也不能单独代表情绪有没有改善。'],
+  ['proof-of-concept','proof of concept','概念验证：先确认一个想法在实验条件下有迹象可行，还不是证明它已经能成为有效治疗。'],
+  ['洗脱期','washout period','两次实验之间留出一段时间，让前一次药物的影响尽量退去，避免串到下一次比较里。'],
+  ['单中心','single-centre study','研究只在一个医院或实验室完成。流程容易统一，但结果是否适用于别的地方，还需要更多研究。'],
+  ['N-back','n-back task','屏幕上不断出现字母或图形，参与者要记住前面几个项目并判断当前项目是否重复。它是实验室任务，不等于全面的记忆能力。']
+ ];
+ const escapeRegExp=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+ const glossify=text=>{const terms=[...glossary].sort((x,y)=>y[0].length-x[0].length);const re=new RegExp('('+terms.map(x=>escapeRegExp(x[0])).join('|')+')','gi');return text.replace(re,match=>{const item=terms.find(x=>x[0].toLowerCase()===match.toLowerCase());return `<button class="gloss-term" type="button" data-gloss="${item[1]}" aria-expanded="false">${match}</button>`})};
+ const paragraphs=text=>text.trim().split(/\n\s*\n/).map(x=>`<p>${glossify(x)}</p>`).join('');
  const story=credibility?{
   kicker:'一篇系统综述如何调查“疗效数字背后的研究现场”',
-  opening:`门诊或学术会议上，一个醒目的疗效数字很容易让人停下来：干预组改善很多，对照组变化很小，作者于是写下“效果显著”。但在这个结论之前，有一整段看不见的过程：患者怎样进入试验、谁决定分组、治疗有没有按计划执行、结果有没有按原方案分析。\n\n这篇论文追问的正是这段过程。它没有评选哪一种心理治疗最好，而是回头查看一批针对常见精神障碍的心理干预随机试验，问这些试验留下了多少足够让别人相信、复核和重复的证据。`,
+  opening:`假设你读到一篇心理治疗论文：干预组的症状降了很多，作者说效果显著。读到这里，故事好像已经结束了。可如果我们把页面往前翻，真正的调查才刚刚开始：这群患者是怎么分组的？研究者有没有提前写好计划？那些中途离开的人还算不算在结果里？\n\n这篇综述就像把一大摞论文摊在桌上，逐份追问这些看起来不起眼的小事。它不负责评选哪种心理治疗最好；它想弄清楚的是，我们眼前这些疗效数字，有多少留下了让别人核对的线索。` ,
   scene:`作者把范围限定在成年人常见精神障碍的心理干预试验，参与者至少 80% 为汉族。研究团队从 MEDLINE、Embase、PsycINFO、CNKI 和万方寻找中英文论文，检索到 2025 年 9 月 1 日。筛选和资料提取由 12 位评审者独立、重复完成。\n\n搜索先找到 37,787 条记录，最终留下 857 项随机对照试验，共 75,143 名参与者。这个规模很重要：它让我们看到的不是某个研究团队的偶然失误，而是一个领域在注册、设计、报告和发表上的整体图景。`,
   method:`研究者像检查一份试验档案那样逐项核对。随机分组，是否真的用合适方法产生？分配隐藏，能不能避免研究人员预先知道下一个患者进哪组？结局评估者盲法，评估结果的人是否不知道患者接受了什么？意向性分析，是否尽量按最初分组保留所有参与者？治疗手册，别人能否知道心理干预具体做了什么？\n\n这些环节各自处理不同的偏倚。它们不是为了让论文显得“更规范”的手续，而是决定研究结果能否被独立检查。`,
   turn:`检查表带来的第一层发现不太轻松：只有 34 项（4%）报告了注册方案；398 项（46%）充分报告随机化方法；21 项（2%）使用有效的分配隐藏；78 项（9%）报告结局评估者盲法；32 项（4%）采用意向性分析；78 项（9%）引用了所用干预的治疗手册。\n\n第二层发现更值得停下来想一想：417 项（49%）被评审者标记为存在数据真实性方面的关注。这些研究报告的效应量中位数为 Hedges’ g=2.06；没有被标记相关关注的 440 项研究，中位数为 g=0.96。两组数字差别很大，但它们是综述中的关联，不足以单独证明某篇研究造假，也不能推出所有大效应都是假的。`,
@@ -41,8 +68,8 @@ function renderArticle(a){
   source:'https://pubmed.ncbi.nlm.nih.gov/42309104/', sourceLabel:'PubMed 论文记录与摘要 · PMID 42309104 · DOI 10.1016/S2215-0366(26)00133-1'
  }:{
   kicker:'一夜实验追问：睡得更深，第二天会不会更清醒？',
-  opening:`有些睡眠问题，用“睡了几小时”说不清。一个人可能在床上待了很久，醒来仍觉得没有恢复；也有人入睡不难，却发现第二天注意力很容易断掉。对抑郁症患者来说，失眠、夜间觉醒和白天困倦都很常见，研究者想知道的于是更具体：夜里的睡眠结构能否被改变？这种改变会不会带到第二天？\n\n先说明，这里没有一个被论文追踪的“典型患者”。下面从常见临床困惑进入研究，是为了讲清楚问题，不是把虚构病例当成试验参与者。`,
-  scene:`慢波睡眠，也叫 N3 或深睡眠，是研究者选中的入口。以往研究提示，重性抑郁障碍中慢波睡眠可能减少，但个体差异很大；而一些常用助眠药可能让人更困，却未必增加这种恢复性睡眠。羟丁酸钠（GHB，临床制剂为 sodium oxybate）已用于发作性睡病，能促进慢波睡眠，因此研究团队把它带进了抑郁症睡眠实验。\n\n他们没有直接问“它能不能治疗抑郁症”，而是先做一个更窄、更容易测量的检验：与安慰剂和曲唑酮相比，单次给药能否改变整夜的睡眠结构，以及第二天的警觉、工作记忆和情绪指标？`,
+  opening:`这篇论文有个让人一下记住的时间：凌晨三点半。苏黎世睡眠实验室里，参与者被提示声叫醒，喝下研究用的液体，再回到床上。研究者想看一件很具体的事：如果把后半夜的深睡眠往上推一点，天亮后的注意力会不会跟着变好？\n\n这个实验从一个真实又常见的困扰开始：有些人睡了很久，醒来还是觉得没恢复；有些人夜里断断续续，白天注意力也容易掉线。论文研究的不是某一个“典型病人”，而是在受控条件下，追踪一组门诊患者经历不同睡眠夜晚后的变化。` ,
+  scene:`研究者盯上的，是睡眠里一段叫“慢波睡眠”的深睡眠。以前的研究发现，抑郁症患者的这段睡眠可能偏少，不过每个人差别很大。更麻烦的是，有些助眠药虽然让人睡着了，第二天却可能更困，并没有让睡眠变得更“恢复”。\n\n羟丁酸钠已经用于发作性睡病，研究者知道它能增加深睡眠。于是他们把它拿来和曲唑酮、安慰剂比较。但问题收得很窄：先不问能不能治好抑郁症，只看一晚之后，睡眠记录变没变，第二天注意力和记忆任务有没有变化。` ,
   method:`这是一项在苏黎世单中心睡眠实验室完成的随机、双盲、交叉试验。参与者不是被分成三个平行小组；每个人在不同实验夜分别经历羟丁酸钠、曲唑酮和安慰剂，顺序经过平衡，实验夜之间留出 7 天洗脱期。交叉设计让研究者能比较同一个人在不同条件下的变化，但也意味着结果仍来自严格控制的实验环境。\n\n方案包含筛查夜、适应夜和三次实验夜。每晚用多导睡眠监测记录脑电等信号；第二天再做 10 分钟警觉性任务和 N-back 工作记忆任务，并测量血浆 BDNF。随机入组 29 人，23 人至少接受一次干预并纳入分析，22 人完成全部方案。参与者为 20–65 岁门诊患者，均处于稳定抗抑郁治疗中。`,
   turn:`实验安排有一个不寻常的细节：羟丁酸钠在凌晨 3:30 才给，曲唑酮则在晚上 23:30 给。研究团队依据药物作用时间和半衰期安排给药，希望在后半夜观察慢波睡眠。这个时间表属于一次受控实验设计，不能被读成临床服药方案。\n\n睡眠监测给出了清楚的生理信号。与安慰剂相比，羟丁酸钠使慢波睡眠占总睡眠时间的比例平均增加 15.8 个百分点，也比曲唑酮高 12.2 个百分点；总睡眠时间约增加 24 分钟，睡眠效率提高约 5.5 个百分点，夜间醒着的时间减少约 19.5 分钟。曲唑酮没有显著增加慢波睡眠。\n\n第二天的结果没有完全照着研究者的期待走：警觉性任务中的短暂注意力失误减少，但反应时间中位数没有变化；工作记忆和 BDNF 也没有发现条件间差异。也就是说，信号不是“所有认知都变好”，而是特定睡眠指标和一项警觉性测量发生了变化。`,
   meaning:`这种“部分改善、部分不变”的结果，比一句“睡眠改善了”更值得读。它提示深睡眠的增加可能与某些白天注意力表现相连，但研究没有证明慢波睡眠的增加就是警觉改善的唯一原因；也没有证明患者的抑郁心境因此改善。实验只观察一次给药后的一夜和次日，不能回答连续使用数周后会怎样。\n\n安全性也需要放进同一幅图里看。没有出现严重不良事件；羟丁酸钠条件下 22 人中有 8 人报告轻度副作用，常见恶心和头晕。小样本、单夜实验里“未见严重事件”不能保证长期使用安全。`,
@@ -51,11 +78,12 @@ function renderArticle(a){
   note:'重要边界：这是一次单中心、单夜给药的 proof-of-concept 实验，评估的是睡眠生理和次日任务表现，并非抑郁症治疗试验。',
   source:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12170893/', sourceLabel:'开放获取全文 · Neuropsychopharmacology · DOI 10.1038/s41386-025-02104-4'
  };
+ window.SOPHIA_GLOSSARY=Object.fromEntries(glossary.map(x=>[x[1],x[2]]));
  const readTime=credibility?'约 12 分钟':'约 14 分钟';
- app.innerHTML=`<article class="article blog-article"><a class="back" href="#home">返回研究小报</a><div class="blog-kicker">${story.kicker}</div><div style="margin-top:20px"><span class="tag">${a.topic} · ${a.type||'论文故事'}</span></div><h1>${a.title}</h1><p class="lead">${a.desc}</p><div class="meta"><span>${readTime}</span><span>基于原始论文整理</span><span>含临床解读与证据边界</span></div><div class="article-actions">${saveButton(a)}<button class="save" data-read="${a.id}" aria-pressed="${read.has(a.id)}">${read.has(a.id)?'已读完 · 点击撤销':'标记为已读'}</button></div>${notice}<section class="summary"><div class="eyebrow">先带着这个问题读</div><h2>${a.question}</h2><p>${story.note}</p></section><h2>从一个困惑开始</h2>${paragraphs(story.opening)}<h2>研究者把镜头移到哪里</h2>${paragraphs(story.scene)}<h2>这场研究是怎么进行的</h2>${paragraphs(story.method)}<h2>故事的转折：结果并没有整齐地站在一起</h2>${paragraphs(story.turn)}<h2>这些发现真正说明什么</h2>${paragraphs(story.meaning)}<h2>把论文带回临床</h2>${paragraphs(story.clinic)}<h2>故事停在一个仍然开放的问题上</h2>${paragraphs(story.close)}<section class="review"><h2>论文来源与阅读说明</h2><p><a href="${story.source}" target="_blank" rel="noopener">${story.sourceLabel}</a></p><p>本文是对单篇论文的故事化解读，不是系统综述，也不替代原文。研究数据与本文解释分开呈现；超出论文证据的临床推论会明确收住。</p></section><div class="bottom-note">每篇文章先问：这项研究改变了我们怎样理解一个临床问题？</div></article>`;
+ app.innerHTML=`<article class="article blog-article"><a class="back" href="#home">返回研究小报</a><div class="blog-kicker">${story.kicker}</div><div style="margin-top:20px"><span class="tag">${a.topic} · ${a.type||'论文故事'}</span></div><h1>${a.title}</h1><p class="lead">${a.desc}</p><div class="meta"><span>${readTime}</span><span>基于原始论文整理</span><span>含临床解读与证据边界</span></div><div class="article-actions">${saveButton(a)}<button class="save" data-read="${a.id}" aria-pressed="${read.has(a.id)}">${read.has(a.id)?'已读完 · 点击撤销':'标记为已读'}</button></div>${notice}<section class="summary"><div class="eyebrow">先带着这个问题读</div><h2>${a.question}</h2><p>${story.note}</p><p class="gloss-hint">文中带虚线的词可以点开，查看白话解释。</p></section><h2>从一个困惑开始</h2>${paragraphs(story.opening)}<h2>${credibility?'线索从哪里来':'线索出现：他们盯上了深睡眠'}</h2>${paragraphs(story.scene)}<h2>${credibility?'调查是怎么做的':'实验室里，这几晚是这样过的'}</h2>${paragraphs(story.method)}<h2>${credibility?'一项项查下去，问题浮出来了':'天亮之后，结果没有全都朝同一个方向走'}</h2>${paragraphs(story.turn)}<h2>这到底说明了什么</h2>${paragraphs(story.meaning)}<h2>${credibility?'读到类似论文时，可以怎么用':'把这个发现带回日常看诊'}</h2>${paragraphs(story.clinic)}<h2>最后，研究把一个问题留给了我们</h2>${paragraphs(story.close)}<section class="review"><h2>论文来源与阅读说明</h2><p><a href="${story.source}" target="_blank" rel="noopener">${story.sourceLabel}</a></p><p>本文是对单篇论文的故事化解读，不是系统综述，也不替代原文。研究数据与本文解释分开呈现；超出论文证据的临床推论会明确收住。</p></section><div class="bottom-note">每篇文章先问：这项研究改变了我们怎样理解一个临床问题？</div></article>`;
 }
 
-document.addEventListener('click',e=>{const card=e.target.closest('[data-open]');if(card&&!e.target.closest('a,button')){location.hash='#article/'+card.dataset.open;return}const s=e.target.closest('[data-save]');if(s){const id=s.dataset.save;saved.has(id)?saved.delete(id):saved.add(id);const ok=persist();render();if(ok)toast(saved.has(id)?'已放进你的书架':'已从书架移除');return}const r=e.target.closest('[data-read]');if(r){read.has(r.dataset.read)?read.delete(r.dataset.read):read.add(r.dataset.read);persist();render();return}const f=e.target.closest('[data-filter]');if(f){filter=f.dataset.filter;render();return}const t=e.target.closest('[data-topic]');if(t){filter=t.dataset.topic;query='';render();document.getElementById('cards').scrollIntoView({block:'start'});}});
+document.addEventListener('click',e=>{const term=e.target.closest('[data-gloss]');if(term){const existing=term.nextElementSibling?.classList.contains('gloss-note')?term.nextElementSibling:null;document.querySelectorAll('.gloss-note').forEach(n=>n.remove());document.querySelectorAll('[data-gloss]').forEach(b=>b.setAttribute('aria-expanded','false'));if(!existing){const key=term.dataset.gloss;const definition=(window.SOPHIA_GLOSSARY||{})[key];if(definition){const note=document.createElement('span');note.className='gloss-note';note.setAttribute('role','note');note.textContent=definition;term.insertAdjacentElement('afterend',note);term.setAttribute('aria-expanded','true')}}return}const card=e.target.closest('[data-open]');if(card&&!e.target.closest('a,button')){location.hash='#article/'+card.dataset.open;return}const s=e.target.closest('[data-save]');if(s){const id=s.dataset.save;saved.has(id)?saved.delete(id):saved.add(id);const ok=persist();render();if(ok)toast(saved.has(id)?'已放进你的书架':'已从书架移除');return}const r=e.target.closest('[data-read]');if(r){read.has(r.dataset.read)?read.delete(r.dataset.read):read.add(r.dataset.read);persist();render();return}const f=e.target.closest('[data-filter]');if(f){filter=f.dataset.filter;render();return}const t=e.target.closest('[data-topic]');if(t){filter=t.dataset.topic;query='';render();document.getElementById('cards').scrollIntoView({block:'start'});}});
 window.renderSophiaApp=render;
 window.addEventListener('hashchange',()=>{filter='全部';query='';render();window.scrollTo(0,0)});render();
 
@@ -72,3 +100,5 @@ function setInterfaceLanguage(english){
 }
 
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&!e.target.closest('a,button')&&e.target.closest('[data-open]')){e.preventDefault();location.hash='#article/'+e.target.closest('[data-open]').dataset.open}});
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.gloss-note').forEach(n=>n.remove());document.querySelectorAll('[data-gloss]').forEach(b=>b.setAttribute('aria-expanded','false'))}});

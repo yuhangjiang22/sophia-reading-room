@@ -43,3 +43,15 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 .header-actions{align-items:center!important}
 .header-actions .area-switch a{display:inline-flex;align-items:center;height:40px;line-height:1;padding:0 10px}
 .header-actions #logout{height:40px!important;line-height:1;padding:0 12px;vertical-align:middle}
+
+/* inline plain-language glossary in article text */
+.gloss-term{display:inline;border:0;border-bottom:1px dashed var(--purple);background:transparent;color:var(--purple);padding:0;font:inherit;cursor:pointer}
+.gloss-term:hover,.gloss-term[aria-expanded=true]{color:#49345d;border-bottom-style:solid}
+.gloss-term:focus-visible{outline:2px solid #ab8dcb;outline-offset:2px;border-radius:2px}
+.gloss-note{display:block;margin:9px 0 12px;padding:11px 14px;background:var(--pale);border-left:3px solid var(--purple);border-radius:0 7px 7px 0;color:#51485a;font-size:15px;line-height:1.8}
+.gloss-hint{font-size:13px!important;color:var(--muted)!important;margin-bottom:0}
+.blog-article>p{font-size:17px;line-height:2.05;margin:16px 0 21px}
+.blog-article>h2{margin-top:42px}
+.blog-kicker{font-size:15px;line-height:1.8;color:var(--purple);margin:24px 0 5px}
+.gloss-note{width:min(100%,620px)}
+@media(max-width:600px){.blog-article>p{font-size:16px;line-height:2}.blog-article>h2{font-size:22px;margin-top:34px}}
