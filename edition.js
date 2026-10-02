@@ -8,7 +8,7 @@ window.CONGER_EDITION = Object.freeze({
   theme: '睡眠与情绪',
   featuredArticleId: 'sleep',
   tone: '安静、温柔',
-  headline: '聪儿，今晚读一点关于睡眠的事。',
+  headline: '聪儿，一起读一点关于睡眠的事。',
   lines: ['从夜晚的睡眠，到白天的情绪。', '带着问题，一起读懂它们之间的联系。'],
-  companion: '今晚先读懂一个问题，剩下的慢慢来。'
+  companion: '先读懂一个问题，剩下的慢慢来。'
 });
