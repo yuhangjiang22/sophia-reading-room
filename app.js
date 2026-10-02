@@ -21,11 +21,18 @@ function filtered(list){return list.filter(a=>(filter==='全部'||a.topic===filt
 function toolbar(){return `<div class="toolbar"><div class="filters" aria-label="按专题筛选">${topics.map(t=>`<button class="filter ${filter===t?'active':''}" data-filter="${t}" aria-pressed="${filter===t}">${t}</button>`).join('')}</div><input class="search" id="search" type="search" placeholder="搜索感兴趣的问题…" aria-label="搜索论文导读"></div>`}
 function cards(list){const items=filtered(list);return items.length?items.map(card).join(''):'<div class="empty"><h2>这里还没有文章</h2><p>试试其他关键词或专题，或先收藏一篇感兴趣的样稿。</p></div>'}
 function listSource(){return location.hash==='#shelf'?articles.filter(a=>saved.has(a.id)):articles}
+function glossifyCandidate(text,seen=new Set()){
+ const glossary=window.SOPHIA_CANDIDATE_GLOSSARY||{};window.SOPHIA_GLOSSARY=glossary;
+ const terms=Object.keys(glossary).sort((a,b)=>b.length-a.length);
+ const escape=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+ const pattern=new RegExp('('+terms.map(escape).join('|')+')','gi');
+ return text.replace(pattern,match=>{const key=terms.find(term=>term.toLowerCase()===match.toLowerCase());if(seen.has(key))return match;seen.add(key);return `<button class="gloss-term" type="button" data-gloss="${key}" aria-expanded="false">${match}</button>`});
+}
 function renderCandidates(){
  const topics=['全部',...new Set(candidates.map(c=>c.topic))];
  const visible=candidates.filter(c=>(candidateFilter==='全部'||c.topic===candidateFilter)&&(`${c.title}${c.desc}${c.topic}${c.paperTitle}${c.journal}`.toLowerCase().includes(candidateQuery.toLowerCase())));
- const cardsHtml=visible.length?visible.map((c,i)=>`<article class="card candidate-card"><div class="card-top"><span class="tag">${c.topic}</span><span class="card-number">${String(i+1).padStart(2,'0')}</span></div><h3><a href="${c.url}" target="_blank" rel="noopener">${c.title}</a></h3><p>${c.desc}</p><div class="candidate-meta">${c.year} · ${c.journal} · ${c.type}</div><div class="candidate-boundary"><strong>读摘要时先记住</strong><span>${c.caveat}</span></div><div class="candidate-source"><span>原文题名：${c.paperTitle}</span><a href="${c.url}" target="_blank" rel="noopener">PubMed 原文 ↗</a></div><div class="candidate-actions"><span>这篇值得写成长文吗？</span><div><button class="save ${candidateFeedback[c.id]==='interested'?'selected':''}" data-candidate="${c.id}" data-feedback="interested" aria-pressed="${candidateFeedback[c.id]==='interested'}">感兴趣</button><button class="save ${candidateFeedback[c.id]==='skip'?'selected':''}" data-candidate="${c.id}" data-feedback="skip" aria-pressed="${candidateFeedback[c.id]==='skip'}">暂不考虑</button></div></div></article>`).join(''):'<div class="empty"><h2>没有找到匹配研究</h2><p>换一个关键词或专题试试。</p></div>';
- app.innerHTML=`<section class="page-title"><div class="eyebrow">A WIDER FIELD OF EVIDENCE</div><h1>本期候选论文</h1><p>先把值得留意的研究摆出来，再从中挑选适合写成长篇故事的主题。</p><small>共 ${candidates.length} 篇候选摘要 · 另有 ${articles.length} 篇已完成长篇解读</small></section><div class="candidate-disclaimer"><strong>阅读范围说明</strong><p>以下是根据 PubMed 题录与摘要整理的初筛简报，目的是帮助浏览和挑选。它们尚未完成全文核对，不等同于完整论文解读、系统综述或临床建议；页面会保留摘要未回答的问题和研究边界。</p></div><div class="toolbar"><div class="filters" aria-label="按专题筛选候选论文">${topics.map(t=>`<button class="filter ${candidateFilter===t?'active':''}" data-candidate-filter="${t}" aria-pressed="${candidateFilter===t}">${t}</button>`).join('')}</div><input class="search" id="candidate-search" type="search" placeholder="搜索主题、研究问题或期刊…" aria-label="搜索候选论文"></div><p class="candidate-count">显示 ${visible.length} / ${candidates.length} 篇 · 选择“感兴趣”或“暂不考虑”会保存在当前浏览器</p><div class="cards candidate-grid">${cardsHtml}</div>`;
+ const cardsHtml=visible.length?visible.map((c,i)=>{const seen=new Set();return `<article class="card candidate-card"><div class="card-top"><span class="tag">${c.topic}</span><span class="card-number">${String(i+1).padStart(2,'0')}</span></div><h3>${glossifyCandidate(c.title,seen)}</h3><p>${glossifyCandidate(c.desc,seen)}</p><div class="candidate-meta">${c.year} · ${c.journal} · ${glossifyCandidate(c.type,seen)}</div><div class="candidate-boundary"><strong>读摘要时先记住</strong><span>${glossifyCandidate(c.caveat,seen)}</span></div><div class="candidate-source"><span>原文题名：${glossifyCandidate(c.paperTitle,seen)}</span><a href="${c.url}" target="_blank" rel="noopener">PubMed 原文 ↗</a></div><div class="candidate-actions"><span>这篇值得写成长文吗？</span><div><button class="save ${candidateFeedback[c.id]==='interested'?'selected':''}" data-candidate="${c.id}" data-feedback="interested" aria-pressed="${candidateFeedback[c.id]==='interested'}">感兴趣</button><button class="save ${candidateFeedback[c.id]==='skip'?'selected':''}" data-candidate="${c.id}" data-feedback="skip" aria-pressed="${candidateFeedback[c.id]==='skip'}">暂不考虑</button></div></div></article>`}).join(''):'<div class="empty"><h2>没有找到匹配研究</h2><p>换一个关键词或专题试试。</p></div>';
+ app.innerHTML=`<section class="page-title"><div class="eyebrow">A WIDER FIELD OF EVIDENCE</div><h1>本期候选论文</h1><p>先把值得留意的研究摆出来，再从中挑选适合写成长篇故事的主题。</p><small>共 ${candidates.length} 篇候选摘要 · 另有 ${articles.length} 篇已完成长篇解读</small></section><div class="candidate-disclaimer"><strong>阅读范围说明</strong><p>以下是根据 PubMed 题录与摘要整理的初筛简报，目的是帮助浏览和挑选。它们尚未完成全文核对，不等同于完整论文解读、系统综述或临床建议；页面会保留摘要未回答的问题和研究边界。题目、摘要和原文题名中带虚线的专业词都可以点击查看白话解释。</p></div><div class="toolbar"><div class="filters" aria-label="按专题筛选候选论文">${topics.map(t=>`<button class="filter ${candidateFilter===t?'active':''}" data-candidate-filter="${t}" aria-pressed="${candidateFilter===t}">${t}</button>`).join('')}</div><input class="search" id="candidate-search" type="search" placeholder="搜索主题、研究问题或期刊…" aria-label="搜索候选论文"></div><p class="candidate-count">显示 ${visible.length} / ${candidates.length} 篇 · 选择“感兴趣”或“暂不考虑”会保存在当前浏览器</p><div class="cards candidate-grid">${cardsHtml}</div>`;
  const input=document.getElementById('candidate-search');input.value=candidateQuery;input.addEventListener('input',e=>{candidateQuery=e.target.value;const cursor=e.target.selectionStart;renderCandidates();const next=document.getElementById('candidate-search');next.focus();next.setSelectionRange(cursor,cursor)});
 }
 function render(){let route=location.hash.slice(1)||'home';document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('active',a.dataset.nav===route));if(document.getElementById('saved-count'))document.getElementById('saved-count').textContent=saved.size;document.title='聪儿的研究小屋';
@@ -41,7 +48,7 @@ function renderArticle(a){
  document.title=a.title+' · 聪儿的研究小屋';
  const credibility=a.id==='credibility';
  const additional=window.SOPHIA_PAPERS?.[a.id];
- const glossary=additional?.glossary||(credibility?[
+ let glossary=additional?.glossary||(credibility?[
   ['随机对照试验','randomized controlled trial','研究者把参与者分到不同组，再比较结果。随机分组是为了尽量让各组起点相近；它不能自动保证研究做得好。'],
   ['随机化','randomization','用随机方式决定谁进哪一组，减少研究者或参与者挑选分组造成的偏差。'],
   ['分配隐藏','allocation concealment','在患者正式入组前，不让负责招募的人提前知道下一个人会进哪组，避免无意中影响入组。'],
@@ -50,7 +57,10 @@ function renderArticle(a){
   ['效应量','effect size','把两组差异换成可比较的标准化数字。g=2 不代表“改善了两倍”，也不直接告诉我们患者实际好转了多少。'],
   ['数据真实性关注','data authenticity concern','审查者发现需要进一步核验的异常信号。它不是造假判决，也不等于已经证明数据有问题。'],
   ['预先注册','trial registration','在研究开始前公开写下计划研究什么、主要看什么结果，方便后来检查有没有临时改问题或挑结果。'],
-  ['偏倚','bias','研究过程里某种稳定的倾斜，让结果更容易朝某个方向走。它不一定是故意造成的。']
+  ['偏倚','bias','研究过程里某种稳定的倾斜，让结果更容易朝某个方向走。它不一定是故意造成的。'],
+  ['Hedges’ g','Hedges’ g','一种标准化效应量，用标准差单位表示两组差异；它不是症状量表上的原始分数，也不能独自说明患者是否感到明显好转。'],
+  ['系统综述','systematic review','按预先说明的方法系统搜寻、筛选并总结相关研究；结论仍取决于纳入研究的质量和差异。'],
+  ['Cochrane 偏倚风险工具','Cochrane risk-of-bias tool','用于按多个研究环节评估结果可能受到何种偏倚影响的检查框架；它不是判断造假的工具。']
  ]:[
   ['交叉试验','crossover trial','同一个人先后经历不同实验条件，再比较自己在各条件下的表现；因此不只是拿甲组和乙组作比较。'],
   ['双盲','double-blind','尽量让参与者和研究团队不知道当晚拿到的是哪种药，减少期待影响。实际能否完全盲住，还要看药物效果是否容易被察觉。'],
@@ -64,10 +74,31 @@ function renderArticle(a){
   ['proof-of-concept','proof of concept','概念验证：先确认一个想法在实验条件下有迹象可行，还不是证明它已经能成为有效治疗。'],
   ['洗脱期','washout period','两次实验之间留出一段时间，让前一次药物的影响尽量退去，避免串到下一次比较里。'],
   ['单中心','single-centre study','研究只在一个医院或实验室完成。流程容易统一，但结果是否适用于别的地方，还需要更多研究。'],
-  ['N-back','n-back task','屏幕上不断出现字母或图形，参与者要记住前面几个项目并判断当前项目是否重复。它是实验室任务，不等于全面的记忆能力。']
+  ['N-back','n-back task','屏幕上不断出现字母或图形，参与者要记住前面几个项目并判断当前项目是否重复。它是实验室任务，不等于全面的记忆能力。'],
+  ['N3','N3 sleep stage','睡眠分期中的深睡眠阶段之一；研究通过脑电等信号判定，和主观“睡得沉”不是完全相同的测量。'],
+  ['警觉性任务','psychomotor vigilance task','通过对提示作出快速反应来观察注意力波动的实验任务；它不等同于完整的日常工作能力。'],
+  ['心理运动警觉任务','psychomotor vigilance task','通过对提示作出快速反应来观察注意力波动的实验任务；它不等同于完整的日常工作能力。'],
+  ['脑源性神经营养因子','brain-derived neurotrophic factor','一种参与神经系统生长与可塑性过程的蛋白质；血液中的单次测量不是抑郁症诊断或治疗反应的直接指标。']
  ]);
+ glossary=[...glossary,
+  ['随机对照试验','randomized controlled trial','研究者用随机方式分配参与者，再比较不同组的结果；随机分组能降低某些偏差，但不能自动消除所有偏倚。'],
+  ['置信区间','confidence interval','表达研究估计有多不确定的一段范围；范围越宽，结果通常越不精确。它不是“真实值有 95% 概率落在这里”的简单保证。'],
+  ['随机分配','random allocation','用随机方式决定参与者进入哪组，尽量避免研究者或参与者挑选分组。'],
+  ['安慰剂','placebo','看起来像研究治疗、但不含该有效成分的对照；帮助估计治疗本身带来的变化。'],
+  ['不良事件','adverse event','研究期间发生的不利健康状况；记录到不代表一定由研究治疗造成。'],
+  ['交叉设计','crossover design','同一参与者按不同顺序接受多个条件，并与自己比较；需要留意顺序效应和前一条件残留影响。'],
+  ['多中心','multicentre study','研究在多个医院或机构进行，通常能纳入更广的人群；各中心执行差异也需要管理。'],
+  ['亚组分析','subgroup analysis','把参与者按某个特征分开观察结果；若未预先计划或样本很少，偶然发现的差异容易被误读。'],
+  ['统计学显著','statistical significance','表示数据与某个统计假设不太相符，不等于效果很大、很重要或对每个患者都有帮助。'],
+  ['随机化','randomization','用随机方式决定分组，帮助让治疗组在已知和未知特征上更可比；还要结合分配隐藏等措施。'],
+  ['基线','baseline','治疗或观察开始前测量的起点，用于描述参与者并比较后续变化。'],
+  ['随访','follow-up','在最初评估之后继续追踪参与者，观察效果是否维持及是否出现较晚的结果。'],
+  ['CNKI','China National Knowledge Infrastructure','中国知网，是收录中文学术文献的检索平台之一。'],
+  ['万方','Wanfang Data','万方数据知识服务平台，收录中文学术期刊、学位论文等资料；不同数据库覆盖范围并不相同。']
+ ];
+ const annotatedTerms=new Set();
  const escapeRegExp=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
- const glossify=text=>{const terms=[...glossary].sort((x,y)=>y[0].length-x[0].length);const re=new RegExp('('+terms.map(x=>escapeRegExp(x[0])).join('|')+')','gi');return text.replace(re,match=>{const item=terms.find(x=>x[0].toLowerCase()===match.toLowerCase());return `<button class="gloss-term" type="button" data-gloss="${item[1]}" aria-expanded="false">${match}</button>`})};
+ const glossify=text=>{const terms=[...glossary].sort((x,y)=>y[0].length-x[0].length);const re=new RegExp('('+terms.map(x=>escapeRegExp(x[0])).join('|')+')','gi');return text.replace(re,match=>{const item=terms.find(x=>x[0].toLowerCase()===match.toLowerCase());if(annotatedTerms.has(item[1]))return match;annotatedTerms.add(item[1]);return `<button class="gloss-term" type="button" data-gloss="${item[1]}" aria-expanded="false">${match}</button>`})};
  const paragraphs=text=>text.trim().split(/\n\s*\n/).map(x=>`<p>${glossify(x)}</p>`).join('');
  const story=additional?.story||(credibility?{
   kicker:'一篇系统综述如何调查“疗效数字背后的研究现场”',
@@ -96,7 +127,7 @@ function renderArticle(a){
  const headings=story.headings||['从一个困惑开始',credibility?'线索从哪里来':'线索出现：他们盯上了深睡眠',credibility?'调查是怎么做的':'实验室里，这几晚是这样过的',credibility?'一项项查下去，问题浮出来了':'天亮之后，结果没有全都朝同一个方向走','这到底说明了什么',credibility?'读到类似论文时，可以怎么用':'把这个发现带回日常看诊','最后，研究把一个问题留给了我们'];
  const readTime=story.readTime||(credibility?'约 12 分钟':'约 14 分钟');
  const paperSource=story.source||a.source, paperSourceLabel=story.sourceLabel||a.sourceLabel;
- app.innerHTML=`<article class="article blog-article"><a class="back" href="#home">返回研究小报</a><div class="blog-kicker">${story.kicker}</div><div style="margin-top:20px"><span class="tag">${a.topic} · ${a.type||'论文故事'}</span></div><h1>${a.title}</h1><p class="lead">${a.desc}</p><div class="meta"><span>${readTime}</span><span>基于原始论文整理</span><span>含临床解读与证据边界</span></div><div class="article-actions">${saveButton(a)}<button class="save" data-read="${a.id}" aria-pressed="${read.has(a.id)}">${read.has(a.id)?'已读完 · 点击撤销':'标记为已读'}</button></div>${notice}<section class="summary"><div class="eyebrow">先带着这个问题读</div><h2>${a.question}</h2><p>${story.note}</p><p class="gloss-hint">文中带虚线的词可以点开，查看白话解释。</p></section><h2>${headings[0]}</h2>${paragraphs(story.opening)}<h2>${headings[1]}</h2>${paragraphs(story.scene)}<h2>${headings[2]}</h2>${paragraphs(story.method)}<h2>${headings[3]}</h2>${paragraphs(story.turn)}<h2>${headings[4]}</h2>${paragraphs(story.meaning)}<h2>${headings[5]}</h2>${paragraphs(story.clinic)}<h2>${headings[6]}</h2>${paragraphs(story.close)}<section class="review"><h2>论文来源与阅读说明</h2><p><a href="${paperSource}" target="_blank" rel="noopener">${paperSourceLabel}</a></p><p>本文是对单篇论文的故事化解读，不是系统综述，也不替代原文。研究数据与本文解释分开呈现；超出论文证据的临床推论会明确收住。</p></section><div class="bottom-note">每篇文章先问：这项研究改变了我们怎样理解一个临床问题？</div></article>`;
+ app.innerHTML=`<article class="article blog-article"><a class="back" href="#home">返回研究小报</a><div class="blog-kicker">${glossify(story.kicker)}</div><div style="margin-top:20px"><span class="tag">${glossify(a.topic)} · ${glossify(a.type||'论文故事')}</span></div><h1>${glossify(a.title)}</h1><p class="lead">${glossify(a.desc)}</p><div class="meta"><span>${readTime}</span><span>基于原始论文整理</span><span>含临床解读与证据边界</span></div><div class="article-actions">${saveButton(a)}<button class="save" data-read="${a.id}" aria-pressed="${read.has(a.id)}">${read.has(a.id)?'已读完 · 点击撤销':'标记为已读'}</button></div>${notice}<section class="summary"><div class="eyebrow">先带着这个问题读</div><h2>${glossify(a.question)}</h2><p>${glossify(story.note)}</p><p class="gloss-hint">标题、摘要和正文里带虚线的词可以点击查看白话解释。</p></section><h2>${glossify(headings[0])}</h2>${paragraphs(story.opening)}<h2>${glossify(headings[1])}</h2>${paragraphs(story.scene)}<h2>${glossify(headings[2])}</h2>${paragraphs(story.method)}<h2>${glossify(headings[3])}</h2>${paragraphs(story.turn)}<h2>${glossify(headings[4])}</h2>${paragraphs(story.meaning)}<h2>${glossify(headings[5])}</h2>${paragraphs(story.clinic)}<h2>${glossify(headings[6])}</h2>${paragraphs(story.close)}<section class="review"><h2>论文来源与阅读说明</h2><p><a href="${paperSource}" target="_blank" rel="noopener">${paperSourceLabel}</a></p><p>本文是对单篇论文的故事化解读，不是系统综述，也不替代原文。研究数据与本文解释分开呈现；超出论文证据的临床推论会明确收住。</p></section><div class="bottom-note">每篇文章先问：这项研究改变了我们怎样理解一个临床问题？</div></article>`;
 }
 
 document.addEventListener('click',e=>{const term=e.target.closest('[data-gloss]');if(term){const existing=term.nextElementSibling?.classList.contains('gloss-note')?term.nextElementSibling:null;document.querySelectorAll('.gloss-note').forEach(n=>n.remove());document.querySelectorAll('[data-gloss]').forEach(b=>b.setAttribute('aria-expanded','false'));if(!existing){const key=term.dataset.gloss;const definition=(window.SOPHIA_GLOSSARY||{})[key];if(definition){const note=document.createElement('span');note.className='gloss-note';note.setAttribute('role','note');note.textContent=definition;term.insertAdjacentElement('afterend',note);term.setAttribute('aria-expanded','true')}}return}const candidate=e.target.closest('[data-candidate]');if(candidate){candidateFeedback[candidate.dataset.candidate]=candidate.dataset.feedback;try{localStorage.setItem('conger-candidate-feedback',JSON.stringify(candidateFeedback));toast('已记录你的选择')}catch{toast('当前浏览器无法保存这项选择')}renderCandidates();return}const cf=e.target.closest('[data-candidate-filter]');if(cf){candidateFilter=cf.dataset.candidateFilter;candidateQuery='';renderCandidates();return}const card=e.target.closest('[data-open]');if(card&&!e.target.closest('a,button')){location.hash='#article/'+card.dataset.open;return}const s=e.target.closest('[data-save]');if(s){const id=s.dataset.save;saved.has(id)?saved.delete(id):saved.add(id);const ok=persist();render();if(ok)toast(saved.has(id)?'已放进你的书架':'已从书架移除');return}const r=e.target.closest('[data-read]');if(r){read.has(r.dataset.read)?read.delete(r.dataset.read):read.add(r.dataset.read);persist();render();return}const f=e.target.closest('[data-filter]');if(f){filter=f.dataset.filter;render();return}const t=e.target.closest('[data-topic]');if(t){filter=t.dataset.topic;query='';render();document.getElementById('cards').scrollIntoView({block:'start'});}});
