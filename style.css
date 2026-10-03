@@ -124,6 +124,11 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 .blog-article>h2{margin-top:42px}
 .blog-kicker{font-size:15px;line-height:1.8;color:var(--purple);margin:24px 0 5px}
 .gloss-note{width:min(100%,620px)}
+.story-scene{margin:28px 0 34px;padding:23px 26px;background:#f5f0f7;border:1px solid #e8deef;border-radius:10px}
+.story-scene h2{margin:5px 0 12px!important;font-size:21px}
+.story-scene>p{margin:11px 0;line-height:1.95}
+.story-scene-label{font-size:11px;letter-spacing:1.2px;color:var(--purple);font-weight:600}
+.blog-article .story-scene-note{font-size:12px;line-height:1.7;color:var(--muted);margin:16px 0 0;padding-top:12px;border-top:1px solid #e4d8eb}
 nav{gap:24px}
 @media(max-width:1050px) and (min-width:601px){header{gap:24px}nav{gap:15px;font-size:14px}.brand{font-size:18px}}
 @media(max-width:600px){.blog-article>p{font-size:16px;line-height:2}.blog-article>h2{font-size:22px;margin-top:34px}}
