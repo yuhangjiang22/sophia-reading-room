@@ -120,6 +120,7 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 .gloss-term:focus-visible{outline:2px solid #ab8dcb;outline-offset:2px;border-radius:2px}
 .gloss-note{display:block;margin:9px 0 12px;padding:11px 14px;background:var(--pale);border-left:3px solid var(--purple);border-radius:0 7px 7px 0;color:#51485a;font-size:15px;line-height:1.8}
 .gloss-hint{font-size:13px!important;color:var(--muted)!important;margin-bottom:0}
+.interest-export{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 auto 24px;padding:18px 20px;max-width:1160px;background:#f4eff7;border:1px solid #e8ddef;border-radius:10px}.interest-export strong{color:var(--ink);font-size:15px}.interest-export p{margin:5px 0 0;color:var(--muted);font-size:13px;line-height:1.75}.interest-export button{white-space:nowrap;flex:0 0 auto}
 .blog-article>p{font-size:17px;line-height:2.05;margin:16px 0 21px}
 .blog-article>h2{margin-top:42px}
 .blog-kicker{font-size:15px;line-height:1.8;color:var(--purple);margin:24px 0 5px}
@@ -132,3 +133,4 @@ header{gap:35px}nav{gap:23px;white-space:nowrap}.english-tabs{margin-bottom:26px
 nav{gap:24px}
 @media(max-width:1050px) and (min-width:601px){header{gap:24px}nav{gap:15px;font-size:14px}.brand{font-size:18px}}
 @media(max-width:600px){.blog-article>p{font-size:16px;line-height:2}.blog-article>h2{font-size:22px;margin-top:34px}}
+@media(max-width:600px){.interest-export{align-items:flex-start;flex-direction:column;gap:12px;margin-left:20px;margin-right:20px}.interest-export button{align-self:flex-end}}
