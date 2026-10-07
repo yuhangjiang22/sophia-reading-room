@@ -21,13 +21,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Build the allowlisted public article bundle
+        run: node scripts/build-public-content.cjs
       - name: Require full-text review for every published article
         run: python3 scripts/check-full-text-publication.py
       - uses: actions/configure-pages@v5
       - name: Assemble a minimal public site
         run: |
           mkdir -p _site/assets
-          cp index.html style.css edition.js english.js papers.js publication.js app.js auth.js _site/
+          cp index.html style.css edition.js english.js papers.js publication.js app.js auth.js public-batch.js _site/
           cp assets/favicon.svg assets/conger-character-v1.jpg _site/assets/
       - uses: actions/upload-pages-artifact@v3
         with:
