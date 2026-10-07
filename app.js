@@ -2,12 +2,21 @@ const edition = window.CONGER_EDITION;
 const batchQuestions={
  'artemis-youth':'反污名宣传和基层照护能否一起缩短青少年的求助距离？','star-ptsd-psychosis':'同时治疗创伤和精神病症状，能否改善 PTSD 而不牺牲安全？','task-shared-components':'由非专科人员提供的心理支持中，哪些成分与改善最相关？','violence-nonspecialists':'受训非专科人员能否帮助暴力经历者缓解心理困扰？','prenatal-cbti-pumas':'孕期失眠的两种线上治疗，对睡眠和夜间担忧分别有什么影响？','prenatal-digital-mindfulness':'数字正念课程的失眠改善能否从孕期延续到产后？','perinatal-digital-meta':'数字心理支持对围产期情绪的帮助，是否因诊断状态而不同？','digital-behavioural-activation':'数字行为激活能否把短期抑郁改善维持到更久？','digital-eight-disorders':'不同诊断中的数字治疗证据，真的可以放在一张图上比较吗？','cbt-sleep-psychosis':'精神病相关失眠能否通过调整后的 CBT-I 获得帮助？','ketamine-sleep-circadian':'氯胺酮治疗时的睡眠变化，是疗效线索还是伴随现象？','rem-nightmares':'REM 睡眠和噩梦与情绪困扰之间，哪些联系已经被观察到？','bipolar2-lithium-lamotrigine':'双相 II 型障碍的锂盐和拉莫三嗪试验证据到底有多确定？','ipsrt-bipolar':'稳定生活节律的人际治疗是否能影响双相情绪波动？','ceta-ipv-hiv':'整合心理治疗能否帮助同时面对暴力经历与 HIV 照护压力的女性？','social-determinants-prevention':'把心理预防与改善社会处境结合，能否降低心理障碍发生？','youth-depression-course':'哪些群体线索与年轻人抑郁反复或持续有关？','psilocybin-anhedonia':'裸盖菇素辅助治疗的早期研究中，快感缺失发生了什么变化？','sud-nonpharm-network':'物质使用障碍的非药物干预能改善症状，也能改善生活质量吗？','chatbots-youth':'心理健康聊天机器人对抑郁和焦虑的证据是否一致？'
 };
+function estimateBatchMinutes(id){
+ const story=window.SOPHIA_BATCH_STORIES?.[id]||{};
+ const expansion=window.SOPHIA_BATCH_EXPANSIONS?.[id]||{};
+ const deeper=window.SOPHIA_BATCH_DEPTH?.[id]||{};
+ const vignette=window.SOPHIA_BATCH_VIGNETTES?.[id]||'';
+ const text=[story.kicker,story.opening,story.scene,story.method,story.turn,story.meaning,story.clinic,story.close,vignette,expansion.context,expansion.bridge,expansion.journey,expansion.turning,expansion.afterthought,expansion.reflection,expansion.reflection2,expansion.clinicalThread,expansion.humanQuestion,expansion.nextQuestion,deeper.text,deeper.next].filter(Boolean).join(' ');
+ const hanCount=text.match(/\p{Script=Han}/gu)?.length||0;
+ return Math.max(7,Math.ceil(hanCount/400));
+}
 const articles = [
 {id:'sleep',topic:'睡眠与情绪',type:'原始研究 · 随机交叉试验',title:'当抑郁症的夜晚变得更深：一项慢波睡眠研究告诉了我们什么',desc:'一项随机、双盲、交叉试验，把抑郁症中的睡眠问题拆成慢波睡眠、次日警觉性和工作记忆几个可测量的问题。',question:'改善睡眠结构，能否成为理解抑郁症的新入口？',time:14,paperTitle:'Gamma-hydroxybutyrate to promote slow-wave sleep in major depressive disorder: a randomized crossover trial',source:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12170893/',fullTextUrl:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12170893/',sourceLabel:'开放获取全文 · Neuropsychopharmacology · DOI 10.1038/s41386-025-02104-4'},
 ...Object.entries(window.SOPHIA_PAPERS||{}).map(([id,paper])=>({id,...paper}))
 ,...(window.SOPHIA_BATCH_PAPERS||[]).map(paper=>({
  id:paper.id,topic:paper.topic,type:`${paper.type}`,title:paper.title,desc:paper.desc,
- question:batchQuestions[paper.id],time:Number.parseInt(window.SOPHIA_BATCH_STORIES?.[paper.id]?.readTime?.match(/\d+/)?.[0]||'4',10),
+ question:batchQuestions[paper.id],time:estimateBatchMinutes(paper.id),
  source:paper.fullTextUrl||paper.url,sourceLabel:paper.fullTextUrl?`开放全文 · ${paper.journal} · PMID ${paper.pmid} · ${paper.year}`:`PubMed 题录 · PMID ${paper.pmid} · ${paper.journal} · ${paper.year}`,fullTextUrl:paper.fullTextUrl,
  caveat:paper.caveat,story:window.SOPHIA_BATCH_STORIES?.[paper.id],batchPaper:paper
 }))
@@ -98,9 +107,7 @@ function renderArticle(a){
  const deeper=window.SOPHIA_BATCH_DEPTH?.[a.id];
  const vignette=window.SOPHIA_BATCH_VIGNETTES?.[a.id];
  const expansion=window.SOPHIA_BATCH_EXPANSIONS?.[a.id];
- const articleText=[story.kicker,story.opening,story.scene,story.method,story.turn,story.meaning,story.clinic,story.close,vignette,expansion?.context,expansion?.bridge,expansion?.journey,expansion?.turning,expansion?.afterthought,expansion?.reflection,expansion?.reflection2,expansion?.clinicalThread,expansion?.humanQuestion,expansion?.nextQuestion,deeper?.text,deeper?.next].filter(Boolean).join(' ');
- const hanCount=articleText.match(/\p{Script=Han}/gu)?.length||0;
- const readTime=a.batchPaper?`约 ${Math.max(7,Math.ceil(hanCount/400))} 分钟`:(story.readTime||'约 14 分钟');
+ const readTime=a.batchPaper?`约 ${estimateBatchMinutes(a.id)} 分钟`:(story.readTime||'约 14 分钟');
  app.innerHTML=`<article class="article blog-article"><a class="back" href="#home">返回研究小报</a><div class="blog-kicker">${glossify(story.kicker)}</div><div style="margin-top:20px"><span class="tag">${glossify(a.topic)} · ${glossify(a.type||'论文故事')}</span></div><h1>${glossify(a.title)}</h1><p class="lead">${glossify(a.desc)}</p><div class="meta"><span>${readTime}</span><span>${a.fullTextUrl||additional?.sourceLabel||a.sourceLabel?'依据论文全文整理 · 已核对研究方法与结果':'全文尚未核验 · 仅供编辑筛选'}</span><span>含临床解读与证据边界</span></div><div class="article-actions">${saveButton(a)}<button class="save" data-read="${a.id}" aria-pressed="${read.has(a.id)}">${read.has(a.id)?'已读完 · 点击撤销':'标记为已读'}</button></div>${notice}<section class="summary"><div class="eyebrow">先带着这个问题读</div><h2>${glossify(a.question)}</h2><p>${glossify(story.note)}</p><p class="gloss-hint">正文里带虚线的词可以点击查看白话解释。</p></section><h2>${glossify(headings[0])}</h2>${paragraphs(story.opening)}${vignette?`<section class="story-scene"><div class="story-scene-label">情境示意 · 非真实病例</div><h2>设想这样一个时刻</h2>${paragraphs(vignette)}<p class="story-scene-note">这是为帮助理解研究问题而构造的虚构场景，不是论文中的真实参与者、病例或引语。</p></section>`:''}${expansion?`<h2>${glossify(expansion.contextTitle)}</h2>${paragraphs(expansion.context)}${paragraphs(expansion.bridge)}`:''}<h2>${glossify(headings[1])}</h2>${paragraphs(story.scene)}<h2>${glossify(headings[2])}</h2>${paragraphs(story.method)}${expansion?`<h2>${glossify(expansion.journeyTitle)}</h2>${paragraphs(expansion.journey)}<h3>${glossify(expansion.turningTitle)}</h3>${paragraphs(expansion.turning)}${paragraphs(expansion.afterthought)}`:''}<h2>${glossify(headings[3])}</h2>${paragraphs(story.turn)}<h2>${glossify(headings[4])}</h2>${paragraphs(story.meaning)}${expansion?`<h2>${glossify(expansion.reflectionTitle)}</h2>${paragraphs(expansion.reflection)}${paragraphs(expansion.clinicalThread)}<h2>把论文放回人的问题里</h2>${paragraphs(expansion.humanQuestion)}<h2>这项研究之后，还值得追问什么</h2>${paragraphs(expansion.nextQuestion)}`:''}<h2>${glossify(headings[5])}</h2>${paragraphs(story.clinic)}<h2>${glossify(headings[6])}</h2>${paragraphs(story.close)}${deeper?`<h2>${glossify(deeper.heading)}</h2>${paragraphs(deeper.text)}<h2>${glossify(deeper.nextHeading)}</h2>${paragraphs(deeper.next)}`:''}<section class="review"><h2>论文来源与阅读说明</h2><p><a href="${paperSource}" target="_blank" rel="noopener">${paperSourceLabel}</a></p><p>${a.fullTextUrl||additional?.sourceLabel||a.sourceLabel?'本文依据原始论文全文整理，逐项核对研究对象、设计、结果与作者讨论；故事化场景会明确标注为示意，不将解释写成论文事实。文章不是系统综述，也不替代原文；超出论文证据的临床推论会明确收住。':'这篇目前仅为内部筛选稿，尚未取得并核对可合法使用的全文；页面文字仅依公开题录与摘要，不能视为全文解读。'}</p></section><div class="bottom-note">每篇文章先问：这项研究改变了我们怎样理解一个临床问题？</div></article>`;
 }
 
