@@ -60,7 +60,7 @@ const input=document.getElementById('search');if(input){input.value=query;input.
 function renderArticle(a){
  document.title=a.title+' · 聪儿的研究小屋';
  const additional=window.SOPHIA_PAPERS?.[a.id]||a;
- let glossary=additional?.glossary||[
+ let glossary=additional?.glossary||window.SOPHIA_PAPER_GLOSSARIES?.[a.id]||[
   ['交叉试验','crossover trial','同一个人先后经历不同实验条件，再比较自己在各条件下的表现；因此不只是拿甲组和乙组作比较。'],
   ['双盲','double-blind','尽量让参与者和研究团队不知道当晚拿到的是哪种药，减少期待影响。实际能否完全盲住，还要看药物效果是否容易被察觉。'],
   ['安慰剂','placebo','看起来像药、但不含研究药物成分的对照，用来分辨药物作用和期待或自然波动。'],

@@ -32,7 +32,7 @@ if not bundle.exists():
 else:
     text = bundle.read_text(encoding='utf-8')
     assignments = {}
-    for name in ['SOPHIA_BATCH_PAPERS','SOPHIA_BATCH_STORIES','SOPHIA_BATCH_EXPANSIONS','SOPHIA_BATCH_DEPTH','SOPHIA_BATCH_VIGNETTES','SOPHIA_FIGURE_GUIDES','SOPHIA_PAPER_WALKTHROUGHS']:
+    for name in ['SOPHIA_BATCH_PAPERS','SOPHIA_BATCH_STORIES','SOPHIA_BATCH_EXPANSIONS','SOPHIA_BATCH_DEPTH','SOPHIA_BATCH_VIGNETTES','SOPHIA_FIGURE_GUIDES','SOPHIA_PAPER_WALKTHROUGHS','SOPHIA_PAPER_GLOSSARIES']:
         found = re.search(rf'window\.{name}=(.*?);(?=\n|$)', text)
         if not found:
             errors.append(f'public bundle is missing {name}')
@@ -41,7 +41,7 @@ else:
             assignments[name] = json.loads(found.group(1))
         except json.JSONDecodeError as exc:
             errors.append(f'{name}: invalid JSON payload ({exc})')
-    if len(assignments) == 7:
+    if len(assignments) == 8:
         guides = assignments['SOPHIA_FIGURE_GUIDES']
         if set(guides) != published:
             errors.append('figure-reading guides do not exactly match the public article allowlist')
@@ -61,6 +61,18 @@ else:
             sections = walkthroughs.get(article_id, {}).get('sections', [])
             if len(sections) < 4 or any(len(section) != 2 or len(section[1].strip()) < 95 for section in sections):
                 errors.append(f'{article_id}: paper walkthrough needs four substantive sections')
+        sleep_walkthrough = json.dumps(walkthroughs.get('sleep', {}), ensure_ascii=False)
+        if '以健康成人为对象' in sleep_walkthrough or '参与者是健康志愿者' in sleep_walkthrough:
+            errors.append('sleep: walkthrough contradicts the depressed outpatient study population')
+        glossaries = assignments['SOPHIA_PAPER_GLOSSARIES']
+        expected_glossary_ids = published - {'sleep','mbct','pramipexole','cosi','ketamine','dmt'}
+        if set(glossaries) != expected_glossary_ids:
+            errors.append('article-specific glossaries do not match the eight batch articles')
+        for article_id in sorted(expected_glossary_ids):
+            terms = glossaries.get(article_id, [])
+            if len(terms) < 5 or any(len(term) != 3 or any(not isinstance(part, str) for part in term)
+                                     or len(term[2].strip()) < 30 for term in terms):
+                errors.append(f'{article_id}: needs at least five plain-language glossary notes')
         batch_ids = {paper['id'] for paper in assignments['SOPHIA_BATCH_PAPERS']}
         if len(batch_ids) != 8:
             errors.append(f'expected 8 reviewed batch articles, found {len(batch_ids)}')

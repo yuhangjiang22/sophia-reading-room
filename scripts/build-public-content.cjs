@@ -9,7 +9,7 @@ vm.createContext(context);
 const sources = [
   'batch-papers.js', 'batch-stories.js', 'batch-expansions.js',
   'batch-longform.js', 'batch-blog-arc.js', 'batch-blog-continuation.js',
-  'batch-depth.js', 'batch-vignettes.js', 'article-figure-guides.js', 'article-paper-walkthroughs.js', 'publication.js'
+  'batch-depth.js', 'batch-vignettes.js', 'article-figure-guides.js', 'article-paper-walkthroughs.js', 'article-paper-glossaries.js', 'publication.js'
 ];
 for (const file of sources) {
   vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), context, { filename: file });
@@ -43,6 +43,10 @@ if (Object.keys(walkthroughs).length !== ids.length) {
   const missing = ids.filter(id => !window.SOPHIA_PAPER_WALKTHROUGHS?.[id]);
   throw new Error(`Missing paper walkthrough for published articles: ${missing.join(', ')}`);
 }
+const glossaries = Object.fromEntries(ids.filter(id => window.SOPHIA_PAPER_GLOSSARIES?.[id]).map(id => [id, window.SOPHIA_PAPER_GLOSSARIES[id]]));
+if (Object.keys(glossaries).length !== ids.length - 6) {
+  throw new Error('Expected article-specific glossaries for all eight batch articles');
+}
 const payload = {
   SOPHIA_BATCH_PAPERS: publishedBatch,
   SOPHIA_BATCH_STORIES: pickMap('SOPHIA_BATCH_STORIES'),
@@ -50,7 +54,8 @@ const payload = {
   SOPHIA_BATCH_DEPTH: pickMap('SOPHIA_BATCH_DEPTH'),
   SOPHIA_BATCH_VIGNETTES: pickMap('SOPHIA_BATCH_VIGNETTES'),
   SOPHIA_FIGURE_GUIDES: figureGuides,
-  SOPHIA_PAPER_WALKTHROUGHS: walkthroughs
+  SOPHIA_PAPER_WALKTHROUGHS: walkthroughs,
+  SOPHIA_PAPER_GLOSSARIES: glossaries
 };
 const out = Object.entries(payload).map(([name, value]) => `window.${name}=${JSON.stringify(value)};`).join('\n') + '\n';
 const outPath = path.join(root, 'public-batch.js');
