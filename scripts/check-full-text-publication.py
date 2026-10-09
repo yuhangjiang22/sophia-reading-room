@@ -32,7 +32,7 @@ if not bundle.exists():
 else:
     text = bundle.read_text(encoding='utf-8')
     assignments = {}
-    for name in ['SOPHIA_BATCH_PAPERS','SOPHIA_BATCH_STORIES','SOPHIA_BATCH_EXPANSIONS','SOPHIA_BATCH_DEPTH','SOPHIA_BATCH_VIGNETTES']:
+    for name in ['SOPHIA_BATCH_PAPERS','SOPHIA_BATCH_STORIES','SOPHIA_BATCH_EXPANSIONS','SOPHIA_BATCH_DEPTH','SOPHIA_BATCH_VIGNETTES','SOPHIA_FIGURE_GUIDES','SOPHIA_PAPER_WALKTHROUGHS']:
         found = re.search(rf'window\.{name}=(.*?);(?=\n|$)', text)
         if not found:
             errors.append(f'public bundle is missing {name}')
@@ -41,7 +41,26 @@ else:
             assignments[name] = json.loads(found.group(1))
         except json.JSONDecodeError as exc:
             errors.append(f'{name}: invalid JSON payload ({exc})')
-    if len(assignments) == 5:
+    if len(assignments) == 7:
+        guides = assignments['SOPHIA_FIGURE_GUIDES']
+        if set(guides) != published:
+            errors.append('figure-reading guides do not exactly match the public article allowlist')
+        for article_id in sorted(published):
+            guide = guides.get(article_id, {})
+            items = guide.get('items', [])
+            if not guide.get('intro') or len(items) < 3:
+                errors.append(f'{article_id}: figure guide needs an introduction and at least three explained figures/tables')
+            for number, item in enumerate(items, 1):
+                if (len(item) != 3 or any(not isinstance(part, str) for part in item)
+                        or len(item[1].strip()) < 30 or len(item[2].strip()) < 20):
+                    errors.append(f'{article_id}: figure/table explanation {number} is incomplete')
+        walkthroughs = assignments['SOPHIA_PAPER_WALKTHROUGHS']
+        if set(walkthroughs) != published:
+            errors.append('paper walkthroughs do not exactly match the public article allowlist')
+        for article_id in sorted(published):
+            sections = walkthroughs.get(article_id, {}).get('sections', [])
+            if len(sections) < 4 or any(len(section) != 2 or len(section[1].strip()) < 95 for section in sections):
+                errors.append(f'{article_id}: paper walkthrough needs four substantive sections')
         batch_ids = {paper['id'] for paper in assignments['SOPHIA_BATCH_PAPERS']}
         if len(batch_ids) != 8:
             errors.append(f'expected 8 reviewed batch articles, found {len(batch_ids)}')

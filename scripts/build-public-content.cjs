@@ -9,7 +9,7 @@ vm.createContext(context);
 const sources = [
   'batch-papers.js', 'batch-stories.js', 'batch-expansions.js',
   'batch-longform.js', 'batch-blog-arc.js', 'batch-blog-continuation.js',
-  'batch-depth.js', 'batch-vignettes.js', 'publication.js'
+  'batch-depth.js', 'batch-vignettes.js', 'article-figure-guides.js', 'article-paper-walkthroughs.js', 'publication.js'
 ];
 for (const file of sources) {
   vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), context, { filename: file });
@@ -33,12 +33,24 @@ function pickMap(name) {
   const source = window[name] || {};
   return Object.fromEntries(batchIds.filter(id => source[id]).map(id => [id, source[id]]));
 }
+const figureGuides = Object.fromEntries(ids.filter(id => window.SOPHIA_FIGURE_GUIDES?.[id]).map(id => [id, window.SOPHIA_FIGURE_GUIDES[id]]));
+if (Object.keys(figureGuides).length !== ids.length) {
+  const missing = ids.filter(id => !window.SOPHIA_FIGURE_GUIDES?.[id]);
+  throw new Error(`Missing figure-reading guide for published articles: ${missing.join(', ')}`);
+}
+const walkthroughs = Object.fromEntries(ids.filter(id => window.SOPHIA_PAPER_WALKTHROUGHS?.[id]).map(id => [id, window.SOPHIA_PAPER_WALKTHROUGHS[id]]));
+if (Object.keys(walkthroughs).length !== ids.length) {
+  const missing = ids.filter(id => !window.SOPHIA_PAPER_WALKTHROUGHS?.[id]);
+  throw new Error(`Missing paper walkthrough for published articles: ${missing.join(', ')}`);
+}
 const payload = {
   SOPHIA_BATCH_PAPERS: publishedBatch,
   SOPHIA_BATCH_STORIES: pickMap('SOPHIA_BATCH_STORIES'),
   SOPHIA_BATCH_EXPANSIONS: pickMap('SOPHIA_BATCH_EXPANSIONS'),
   SOPHIA_BATCH_DEPTH: pickMap('SOPHIA_BATCH_DEPTH'),
-  SOPHIA_BATCH_VIGNETTES: pickMap('SOPHIA_BATCH_VIGNETTES')
+  SOPHIA_BATCH_VIGNETTES: pickMap('SOPHIA_BATCH_VIGNETTES'),
+  SOPHIA_FIGURE_GUIDES: figureGuides,
+  SOPHIA_PAPER_WALKTHROUGHS: walkthroughs
 };
 const out = Object.entries(payload).map(([name, value]) => `window.${name}=${JSON.stringify(value)};`).join('\n') + '\n';
 const outPath = path.join(root, 'public-batch.js');

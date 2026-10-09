@@ -1,6 +1,6 @@
 # 第一期：论文来源与审核记录
 
-检索与核对日期：2026-10-01。初始发现集共有 28 篇。当前仅公开来源索引中标记为全文已核对的 6 篇；其余 22 篇仍是摘要层面的内部筛选记录，不在网站正式文章列表或页面中发布。以下公开链接优先直达全文；阅读故事不替代原文。
+检索与核对始于 2026-10-01，初始发现集共 28 篇。当前公开 14 篇，均有可访问的原文全文链接；其中 8 篇新增论文在 2026-10-07 完成方法、结果与限制核查。其余 14 篇仍是内部候选，尚未完成全文审核，不在网站正式文章列表发布。2026-10-09 又逐篇检查公开文章的主图、结果表和补充材料入口，增加了逐图/逐表白话讲解。以下链接直达全文；文章不是逐字翻译，不替代原文。
 
 | 页面 | 论文、类型与来源 | 入选理由与关键边界 |
 |---|---|---|
@@ -18,7 +18,7 @@
 
 ## 其余待全文核查记录
 
-共有 22 篇未完成全文核查，现已从公开列表与直达页面移除，仅保留为本地选题记录，不视为正式博客。其中新增批次 20 篇的来源与 ID 见 [`2026-10-batch-01-source-review.md`](2026-10-batch-01-source-review.md)；另外两篇如下：
+共有 14 篇未完成全文核查，现已从公开列表与直达页面移除，仅保留为本地选题记录，不视为正式博客。其中新增批次 20 篇的来源与 ID 见 [`2026-10-batch-01-source-review.md`](2026-10-batch-01-source-review.md)；另外两篇如下：
 
 | article/credibility | “Assessing the credibility of psychological intervention trials for common mental disorders in China: a systematic review.” *The Lancet Psychiatry* (2026). DOI: 10.1016/S2215-0366(26)00133-1. [PubMed](https://pubmed.ncbi.nlm.nih.gov/42309104/) | 帮助读者读懂心理治疗效应量背后的试验质量；数据真实性关注不等于造假认定。 |
 | article/anxiety_older | “Pharmacological treatment of anxiety in older adults: a systematic review and meta-analysis.” *The Lancet Psychiatry* (2025). DOI: 10.1016/S2215-0366(25)00100-2. [PubMed](https://pubmed.ncbi.nlm.nih.gov/40379362/) | 老年焦虑药物证据地图；纳入研究数量有限，抗抑郁药结果高度异质，苯二氮䓬类确定性低。 |
